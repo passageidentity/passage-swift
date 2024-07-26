@@ -1,7 +1,7 @@
 import XCTest
-@testable import passage_swift
+@testable import Passage
 
-final class passage_swiftTests: XCTestCase {
+final class PassageTests: XCTestCase {
     func testExample() throws {
         // XCTest Documentation
         // https://developer.apple.com/documentation/xctest
