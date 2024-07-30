@@ -1,0 +1,26 @@
+included: 
+  - Sources
+
+# If true, SwiftLint will not fail if no lintable files are found.
+allow_zero_lintable_files: false
+
+# If true, SwiftLint will treat all warnings as errors.
+strict: false
+
+# If true, SwiftLint will check for updates after linting or analyzing.
+check_for_updates: true
+
+# configurable rules can be customized from this configuration file
+# binary rules can set their severity level
+force_cast: error # implicitly
+force_try:
+  severity: error # explicitly
+
+# rules that have both warning and error levels, can set just the warning level
+# implicitly
+line_length: 110
+
+trailing_whitespace:
+  severity: warning
+  ignores_empty_lines: true
+  ignores_comments: true
