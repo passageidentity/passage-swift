@@ -66,6 +66,6 @@ To update the OpenAPI generated code, follow these steps:
 ## Community
 
 - Join our discussions on [Discord](https://discord.com/invite/445QpyEDXh) to ask questions and interact with our developers other contributors.
-- Check out the [issue tracker](https://github.com/your-repository/issues) for ways to contribute.
+- Check out the [issue tracker](https://github.com/passageidentity/passage-swift/issues) for ways to contribute.
 
 Thank you for contributing to [Your Project Name]! Your efforts help make this project better for everyone.
