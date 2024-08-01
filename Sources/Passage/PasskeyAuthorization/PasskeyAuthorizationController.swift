@@ -25,6 +25,7 @@ internal class PasskeyAuthorizationController:
         // To match other webauthn "cross-platform" behaviors, we always include a Platform provider
         // request, never JUST a Security Key provider request.
         var requests: [ASAuthorizationRequest] = [ platformRegistrationRequest ]
+        #if os(iOS) || os(macOS)
         if includeSecurityKeyOption {
             let securityKeyCredentialProvider = ASAuthorizationSecurityKeyPublicKeyCredentialProvider(
                 relyingPartyIdentifier: registrationRequest.relyingPartyIdentifier
@@ -43,6 +44,7 @@ internal class PasskeyAuthorizationController:
             ]
             requests.append(securityKeyRegistrationRequest)
         }
+        #endif
         let authController = ASAuthorizationController(authorizationRequests: requests)
         authController.delegate = self
         authController.performRequests()
@@ -65,6 +67,7 @@ internal class PasskeyAuthorizationController:
                 challenge: assertionRequest.challenge
             )
         // Handle security key request
+        #if os(iOS) || os(macOS)
         let securityKeyCredentialProvider = ASAuthorizationSecurityKeyPublicKeyCredentialProvider(
             relyingPartyIdentifier: assertionRequest.relyingPartyIdentifier
         )
@@ -72,6 +75,7 @@ internal class PasskeyAuthorizationController:
             .createCredentialAssertionRequest(
                 challenge: assertionRequest.challenge
             )
+        #endif
         // Setting `allowedCredentials` lets us specify which account the offered passkeys
         // should be tied to.
         // If this is not set, iOS will show all of the potential accounts' passkeys.
@@ -81,6 +85,7 @@ internal class PasskeyAuthorizationController:
                 .map { ASAuthorizationPlatformPublicKeyCredentialDescriptor(
                     credentialID: $0
                 ) }
+            #if os(iOS) || os(macOS)
             securityKeyAssertionRequest.allowedCredentials = allowedCredentials
                 .map {
                     ASAuthorizationSecurityKeyPublicKeyCredentialDescriptor(
@@ -91,13 +96,14 @@ internal class PasskeyAuthorizationController:
                             } ?? []
                     )
                 }
+            #endif
         }
-        let authController = ASAuthorizationController(
-            authorizationRequests: [
-                platformAssertionRequest,
-                securityKeyAssertionRequest
-            ]
-        )
+        #if os(iOS) || os(macOS)
+        let authorizationRequests = [platformAssertionRequest, securityKeyAssertionRequest]
+        #else
+        let authorizationRequests = [platformAssertionRequest]
+        #endif
+        let authController = ASAuthorizationController(authorizationRequests: authorizationRequests)
         authController.delegate = self
         authController.performRequests()
         return try await withCheckedThrowingContinuation(
