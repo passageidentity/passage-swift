@@ -1,6 +1,9 @@
 included: 
   - Sources
 
+excluded:
+  - Sources/Passage/generated
+
 # If true, SwiftLint will not fail if no lintable files are found.
 allow_zero_lintable_files: false
 
