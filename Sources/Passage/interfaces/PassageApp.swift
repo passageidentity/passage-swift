@@ -34,7 +34,7 @@ public class PassageApp {
             guard let safeId = identifier
                 .addingPercentEncoding(withAllowedCharacters: .alphanumerics)
             else {
-                throw PassageAppError.invalidRequest
+                throw PassageAppError.invalidRequest(message: "invalid identifier")
             }
             let response = try await UsersAPI
                 .checkUserIdentifier(
@@ -67,7 +67,7 @@ public class PassageApp {
                 createUserParams: params
             )
             guard let user = resposne.user else {
-                throw PassageAppError.invalidRequest
+                throw PassageAppError.invalidRequest(message: "invalid request")
             }
             return user
         } catch {
