@@ -1,8 +1,5 @@
 import AnyCodable
 
-public typealias PassageAppInfo = App
-public typealias PublicUserInfo = User
-
 /// A class representing the Passage application, allowing interaction with the application's API.
 public class PassageApp {
     
