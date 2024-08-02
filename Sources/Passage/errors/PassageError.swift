@@ -1,7 +1,8 @@
 import Foundation
 
-public protocol PassageError: Error {
+public protocol PassageError: Error, LocalizedError {
     static func convert(error: Error) -> Self
+    var errorDescription: String { get }
 }
 
 struct PassageErrorData: Codable {
