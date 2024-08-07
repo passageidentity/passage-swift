@@ -24,7 +24,7 @@ public class Hosted {
             authOrigin = try? await PassageApp(appId: appId).info().authOrigin
         }
         guard let authOrigin else {
-            throw HostedAuthorizationError.cannotAccessAppInfo
+            throw HostedAuthorizationError.cannotAccessAppInfo()
         }
         let hostedAuthController = try HostedAuthorizationController(
             appId: appId,
