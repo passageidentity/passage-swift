@@ -1,6 +1,6 @@
 import Foundation
 
-/// A class allowing interaction with the Passage One-Time Passcode API.
+/// A class for enabling user authentication via social providers like Apple, Google, and GitHub.
 #if !os(tvOS)
 public class Social {
     

@@ -13,8 +13,7 @@ final internal class PassageSocialAuthController:
     NSObject,
     ASWebAuthenticationPresentationContextProviding,
     ASAuthorizationControllerDelegate,
-    ASAuthorizationControllerPresentationContextProviding
-{
+    ASAuthorizationControllerPresentationContextProviding {
     
     internal var verifier = ""
     
@@ -44,14 +43,18 @@ final internal class PassageSocialAuthController:
                 let authCodeData = appleIDCredential.authorizationCode,
                 let authCode = String(data: authCodeData, encoding: .utf8),
                 let idTokenData = appleIDCredential.identityToken,
-                let idToken = String(data: idTokenData, encoding: .utf8) else
-            {
-                siwaContinuation?.resume(throwing: SocialError.missingAppleCredentials)
+                let idToken = String(data: idTokenData, encoding: .utf8)
+            else {
+                siwaContinuation?.resume(
+                    throwing: SocialError.missingAppleCredentials(message: "missing apple credentials")
+                )
                 return
             }
             siwaContinuation?.resume(returning: (authCode, idToken))
         } else {
-            siwaContinuation?.resume(throwing: SocialError.missingAppleCredentials)
+            siwaContinuation?.resume(
+                throwing: SocialError.missingAppleCredentials(message: "missing apple credentials")
+            )
         }
     }
     
@@ -127,7 +130,9 @@ final internal class PassageSocialAuthController:
                 let components = NSURLComponents(url: callbackURL, resolvingAgainstBaseURL: true),
                 let authCode = components.queryItems?.filter({$0.name == "code"}).first?.value
             else {
-                continuation.resume(throwing: SocialError.missingAuthCode)
+                continuation.resume(
+                    throwing: SocialError.missingAuthCode(message: "redirect url is missing auth code")
+                )
                 return
             }
             continuation.resume(returning: authCode)
