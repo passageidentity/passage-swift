@@ -12,7 +12,7 @@ internal struct PasskeyAssertionRequest {
     ///
     /// - Returns: DTO for prompting user to authenticate with a passkey.
     internal static func from(
-        _ response: AuthenticateWebAuthnStartWithTransactionResponse
+        _ response: LoginWebAuthnStartResponse
     ) throws -> PasskeyAssertionRequest {
         let publicKey = response.handshake.challenge.publicKey
         guard

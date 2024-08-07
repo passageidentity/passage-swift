@@ -12,7 +12,7 @@ internal struct PasskeyRegistrationRequest {
     ///
     /// - Returns: DTO for prompting user to register with a passkey.
     internal static func from(
-        _ response: RegisterWebAuthnStartWithTransactionResponse
+        _ response: RegisterWebAuthnStartResponse
     ) throws -> PasskeyRegistrationRequest {
         guard
             let publicKey = response.handshake.challenge.publicKey,
