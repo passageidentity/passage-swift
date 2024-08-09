@@ -2,7 +2,7 @@ import Foundation
 
 /// A class for enabling user authentication via a secure hosted web view.
 #if os(iOS)
-public class Hosted {
+public class PassageHosted {
     
     private let appId: String
     private var authOrigin: String?
