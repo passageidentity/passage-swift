@@ -2,7 +2,7 @@ import Foundation
 
 /// A class for enabling user authentication via social providers like Apple, Google, and GitHub.
 #if !os(tvOS)
-public class Social {
+public class PassageSocial {
     
     private let appId: String
     
