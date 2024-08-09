@@ -13,62 +13,73 @@ public final class PassagePasskey {
         identifier: String,
         authenticatorAttachment: AuthenticatorAttachment = .platform
     ) async throws -> AuthResult {
-        // Request a Registration Start Handshake from Passage server
-        let startRequest = RegisterWebAuthnStartRequest(
-            identifier: identifier,
-            authenticatorAttachment: authenticatorAttachment
-        )
-        let startResponse = try await RegisterAPI.registerWebauthnStart(
-            appId: appId,
-            registerWebAuthnStartRequest: startRequest
-        )
-        // Use the Registration Start Handshake to prompt the app user to create a passkey
-        let registrationRequest = try PasskeyRegistrationRequest.from(startResponse)
-        let authController = PasskeyAuthorizationController()
-        let credential = try await authController.requestPasskeyRegistration(
-            registrationRequest: registrationRequest
-        )
-        // Send the new Credential Handshake Response to Passage server
-        let finishRequest = RegisterWebAuthnFinishRequest(
-            handshakeId: startResponse.handshake.id,
-            handshakeResponse: credential.response(),
-            userId: identifier
-        )
-        let finishResponse = try await RegisterAPI.registerWebauthnFinish(
-            appId: appId,
-            registerWebAuthnFinishRequest: finishRequest
-        )
-        return finishResponse.authResult
+        do {
+            // Request a Registration Start Handshake from Passage server
+            let startRequest = RegisterWebAuthnStartRequest(
+                identifier: identifier,
+                authenticatorAttachment: authenticatorAttachment
+            )
+            let startResponse = try await RegisterAPI.registerWebauthnStart(
+                appId: appId,
+                registerWebAuthnStartRequest: startRequest
+            )
+            // Use the Registration Start Handshake to prompt the app user to create a passkey
+            let registrationRequest = try PasskeyRegistrationRequest.from(startResponse)
+            let authController = PasskeyAuthorizationController()
+            let credential = try await authController.requestPasskeyRegistration(
+                registrationRequest: registrationRequest
+            )
+            // Send the new Credential Handshake Response to Passage server
+            let finishRequest = RegisterWebAuthnFinishRequest(
+                handshakeId: startResponse.handshake.id,
+                handshakeResponse: credential.response(),
+                userId: identifier
+            )
+            let finishResponse = try await RegisterAPI.registerWebauthnFinish(
+                appId: appId,
+                registerWebAuthnFinishRequest: finishRequest
+            )
+            return finishResponse.authResult
+        } catch {
+            throw PassagePasskeyError.convert(error: error)
+        }
     }
 
     public func login(identifier: String? = nil) async throws -> AuthResult {
-        // Request an Assertion Start Handshake from Passage server
-        let startRequest = LoginWebAuthnStartRequest(identifier: identifier)
-        let startResponse = try await LoginAPI.loginWebauthnStart(
-            appId: appId,
-            loginWebAuthnStartRequest: startRequest
-        )
-        // Use the Assertion Start Handshake to prompt the app user to select a passkey
-        let assertionRequest = try PasskeyAssertionRequest.from(startResponse)
-        let authController = PasskeyAuthorizationController()
-        let credential = try await authController.requestPasskeyAssertion(
-            assertionRequest: assertionRequest
-        )
-        // Send the Credential Handshake Response to Passage server
-        let finishRequest = LoginWebAuthnFinishRequest(
-            handshakeId: startResponse.handshake.id,
-            handshakeResponse: credential.response(),
-            userId: identifier
-        )
-        let finishResponse = try await LoginAPI.loginWebauthnFinish(
-            appId: appId,
-            loginWebAuthnFinishRequest: finishRequest
-        )
-        return finishResponse.authResult
+        do {
+            // Request an Assertion Start Handshake from Passage server
+            let startRequest = LoginWebAuthnStartRequest(identifier: identifier)
+            let startResponse = try await LoginAPI.loginWebauthnStart(
+                appId: appId,
+                loginWebAuthnStartRequest: startRequest
+            )
+            // Use the Assertion Start Handshake to prompt the app user to select a passkey
+            let assertionRequest = try PasskeyAssertionRequest.from(startResponse)
+            let authController = PasskeyAuthorizationController()
+            let credential = try await authController.requestPasskeyAssertion(
+                assertionRequest: assertionRequest
+            )
+            // Send the Credential Handshake Response to Passage server
+            let finishRequest = LoginWebAuthnFinishRequest(
+                handshakeId: startResponse.handshake.id,
+                handshakeResponse: credential.response(),
+                userId: identifier
+            )
+            let finishResponse = try await LoginAPI.loginWebauthnFinish(
+                appId: appId,
+                loginWebAuthnFinishRequest: finishRequest
+            )
+            return finishResponse.authResult
+        } catch {
+            throw PassagePasskeyError.convert(error: error)
+        }
+        
     }
     
     #if os(iOS) || os(visionOS)
-    public func requestAutoFill(completion: @escaping (AuthResult?, Error?) -> Void) {
+    public func requestAutoFill(
+        completion: @escaping (AuthResult?, PassagePasskeyError?) -> Void
+    ) {
         Task {
             do {
                 // Request an Assertion Start Handshake from Passage server
@@ -97,7 +108,10 @@ public final class PassagePasskey {
                 )
                 completion(finishResponse.authResult, nil)
             } catch {
-                completion(nil, error)
+                completion(
+                    nil,
+                    PassagePasskeyError.convert(error: error)
+                )
             }
         }
     }
