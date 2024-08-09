@@ -9,15 +9,22 @@ public final class PassagePasskey {
         self.appId = appId
     }
     
+    /// Register a user using a passkey.
+    ///
+    /// - Parameters:
+    ///   - identifier: The user's email, phone number, or other unique id
+    ///   - options: Options to customize how your user's passkey is created
+    /// - Returns: `AuthResult`
+    /// - Throws: `PassagePasskeyError`
     public func register(
         identifier: String,
-        authenticatorAttachment: AuthenticatorAttachment = .platform
+        options: PasskeyCreationOptions? = nil
     ) async throws -> AuthResult {
         do {
             // Request a Registration Start Handshake from Passage server
             let startRequest = RegisterWebAuthnStartRequest(
                 identifier: identifier,
-                authenticatorAttachment: authenticatorAttachment
+                authenticatorAttachment: options?.authenticatorAttachment
             )
             let startResponse = try await RegisterAPI.registerWebauthnStart(
                 appId: appId,
@@ -45,6 +52,11 @@ public final class PassagePasskey {
         }
     }
 
+    /// Login a user using a passkey.
+    ///
+    /// - Parameter identifier: The user's email, phone number, or other unique id
+    /// - Returns: `AuthResult`
+    /// - Throws: `PassagePasskeyError`
     public func login(identifier: String? = nil) async throws -> AuthResult {
         do {
             // Request an Assertion Start Handshake from Passage server
@@ -76,9 +88,15 @@ public final class PassagePasskey {
         
     }
     
+    /// Request to autofill a text field with passkey log in using user's QuickType bar.
+    ///
+    /// - Parameters:
+    ///   - onSuccess: The method that should be called on success.
+    ///   - onError: The method that should be called on error.
     #if os(iOS) || os(visionOS)
     public func requestAutoFill(
-        completion: @escaping (AuthResult?, PassagePasskeyError?) -> Void
+        onSuccess: @escaping (AuthResult) -> Void,
+        onError: @escaping (PassagePasskeyError) -> Void
     ) {
         Task {
             do {
@@ -106,12 +124,9 @@ public final class PassagePasskey {
                     appId: appId,
                     loginWebAuthnFinishRequest: finishRequest
                 )
-                completion(finishResponse.authResult, nil)
+                onSuccess(finishResponse.authResult)
             } catch {
-                completion(
-                    nil,
-                    PassagePasskeyError.convert(error: error)
-                )
+                onError(PassagePasskeyError.convert(error: error))
             }
         }
     }
