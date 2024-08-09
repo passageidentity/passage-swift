@@ -22,7 +22,7 @@ internal struct PasskeyRegistrationRequest {
             let userId = user.id,
             let userName = user.name
         else {
-            throw PassagePasskeyAuthorizationError.webauthnError
+            throw PassagePasskeyError.webauthnLoginFailed(message: "invalid webauthn registration response")
         }
         return PasskeyRegistrationRequest(
             relyingPartyIdentifier: rpId,

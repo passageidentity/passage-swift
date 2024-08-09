@@ -34,13 +34,14 @@ public final class PassagePasskey {
             let registrationRequest = try PasskeyRegistrationRequest.from(startResponse)
             let authController = PasskeyAuthorizationController()
             let credential = try await authController.requestPasskeyRegistration(
-                registrationRequest: registrationRequest
+                registrationRequest: registrationRequest,
+                includeSecurityKeyOption: options?.authenticatorAttachment == .crossPlatform
             )
             // Send the new Credential Handshake Response to Passage server
             let finishRequest = RegisterWebAuthnFinishRequest(
                 handshakeId: startResponse.handshake.id,
                 handshakeResponse: credential.response(),
-                userId: identifier
+                userId: startResponse.user?.id ?? ""
             )
             let finishResponse = try await RegisterAPI.registerWebauthnFinish(
                 appId: appId,
@@ -75,7 +76,7 @@ public final class PassagePasskey {
             let finishRequest = LoginWebAuthnFinishRequest(
                 handshakeId: startResponse.handshake.id,
                 handshakeResponse: credential.response(),
-                userId: identifier
+                userId: startResponse.user?.id
             )
             let finishResponse = try await LoginAPI.loginWebauthnFinish(
                 appId: appId,

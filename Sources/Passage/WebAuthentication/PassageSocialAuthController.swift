@@ -62,7 +62,7 @@ final internal class PassageSocialAuthController:
         controller: ASAuthorizationController,
         didCompleteWithError error: Error
     ) {
-        siwaContinuation?.resume(throwing: error)
+        siwaContinuation?.resume(throwing: SocialError.convert(error: error))
     }
     
     // MARK: STATIC METHODS
