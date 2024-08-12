@@ -47,6 +47,7 @@ internal class PasskeyAuthorizationController:
         #endif
         let authController = ASAuthorizationController(authorizationRequests: requests)
         authController.delegate = self
+        authController.presentationContextProvider = self
         authController.performRequests()
         return try await withCheckedThrowingContinuation(
             { [weak self] (continuation: RegistrationCredentialContinuation) in
@@ -98,13 +99,15 @@ internal class PasskeyAuthorizationController:
                 }
             #endif
         }
+        var authorizationRequests: [ASAuthorizationRequest] = [platformAssertionRequest]
         #if os(iOS) || os(macOS)
-        let authorizationRequests = [platformAssertionRequest, securityKeyAssertionRequest]
-        #else
-        let authorizationRequests = [platformAssertionRequest]
+        if securityKeyAssertionRequest.allowedCredentials.first?.transports.isEmpty == false {
+            authorizationRequests.append(securityKeyAssertionRequest)
+        }
         #endif
         let authController = ASAuthorizationController(authorizationRequests: authorizationRequests)
         authController.delegate = self
+        authController.presentationContextProvider = self
         authController.performRequests()
         return try await withCheckedThrowingContinuation(
             { [weak self] (continuation: AssertionCredentialContinuation) in
@@ -133,23 +136,15 @@ internal class PasskeyAuthorizationController:
         controller: ASAuthorizationController,
         didCompleteWithError error: Error
     ) {
-        var passageError = PassagePasskeyAuthorizationError.unknown
-        if let authError = error as? ASAuthorizationError {
-            if authError.code == .canceled {
-                passageError = .userCanceled
-            } else if authError.code == .failed {
-                passageError = .failed
-            }
-        }
-        assertionCredentialContinuation?.resume(throwing: passageError)
+        assertionCredentialContinuation?.resume(throwing: error)
     }
     
 }
 
-#if os(iOS) || os(visionOS)
-@available(iOS 16.0, visionOS 1.0, *)
+@available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
 extension PasskeyAuthorizationController: ASAuthorizationControllerPresentationContextProviding {
     
+    #if os(iOS) || os(visionOS)
     @available(iOS 16.0, visionOS 1.0, *)
     internal func requestPasskeyAssertionAutoFill (
         assertionRequest: PasskeyAssertionRequest
@@ -174,12 +169,16 @@ extension PasskeyAuthorizationController: ASAuthorizationControllerPresentationC
             }
         )
     }
+    #endif
     
     // MARK: - ASAuthorizationControllerPresentationContextProviding Methods
     
     internal func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        #if os(macOS)
+        return NSApp.windows.last(where: \.isKeyWindow) ?? ASPresentationAnchor()
+        #else
         return UIApplication.shared.windows.last(where: \.isKeyWindow) ?? ASPresentationAnchor()
+        #endif
     }
     
 }
-#endif

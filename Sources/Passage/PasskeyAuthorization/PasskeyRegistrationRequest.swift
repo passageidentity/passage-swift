@@ -12,7 +12,7 @@ internal struct PasskeyRegistrationRequest {
     ///
     /// - Returns: DTO for prompting user to register with a passkey.
     internal static func from(
-        _ response: RegisterWebAuthnStartWithTransactionResponse
+        _ response: RegisterWebAuthnStartResponse
     ) throws -> PasskeyRegistrationRequest {
         guard
             let publicKey = response.handshake.challenge.publicKey,
@@ -22,7 +22,7 @@ internal struct PasskeyRegistrationRequest {
             let userId = user.id,
             let userName = user.name
         else {
-            throw PassagePasskeyAuthorizationError.webauthnError
+            throw PassagePasskeyError.webauthnLoginFailed(message: "invalid webauthn registration response")
         }
         return PasskeyRegistrationRequest(
             relyingPartyIdentifier: rpId,

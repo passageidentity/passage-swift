@@ -2,10 +2,10 @@ import Foundation
 
 public class Passage {
     
-    private let appID: String
+    private let appId: String
     
-    public init(appID: String) {
-        self.appID = appID
+    public init(appId: String) {
+        self.appId = appId
     }
     
 }
