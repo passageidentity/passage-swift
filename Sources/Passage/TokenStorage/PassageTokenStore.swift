@@ -69,7 +69,7 @@ public class PassageTokenStore {
     }
     
     /// Clears all tokens from the keychain.
-    private func clearTokenStore() {
+    public func clearTokenStore() {
         authToken = nil
         refreshToken = nil
         idToken = nil
