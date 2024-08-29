@@ -19,7 +19,7 @@ public class PassageTokenStore {
     
     /// The Passage authentication token stored in the keychain.
     /// This token is used to authenticate requests to the server.
-    public var authToken: String? {
+    public private(set) var authToken: String? {
         get {
             return keychain.getString(key: PassageTokenStore.authTokenKey)
         }
@@ -34,7 +34,7 @@ public class PassageTokenStore {
     
     /// The Passage refresh token stored in the keychain.
     /// This token is used to obtain a new auth token when the current one expires.
-    public var refreshToken: String? {
+    public private(set) var refreshToken: String? {
         get {
             return keychain.getString(key: PassageTokenStore.refreshTokenKey)
         }
@@ -49,7 +49,7 @@ public class PassageTokenStore {
     
     /// The ID token stored in the keychain (Hosted apps only).
     /// This token is used for managing a Hosted app's web auth session.
-    public var idToken: String? {
+    public private(set) var idToken: String? {
         get {
             return keychain.getString(key: PassageTokenStore.idTokenKey)
         }
