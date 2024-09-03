@@ -27,8 +27,7 @@ public enum TokenError: PassageError {
         }
         // Handle client error
         if let errorResponse = error as? ErrorResponse,
-           let (code, errorData) = PassageErrorData.getData(from: errorResponse)
-        {
+           let (code, errorData) = PassageErrorData.getData(from: errorResponse) {
             if errorData.code == Model400Code.request.rawValue {
                 return .invalidRequest(message: errorData.error)
             } else if code == 401 {
