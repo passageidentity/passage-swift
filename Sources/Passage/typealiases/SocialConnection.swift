@@ -1,0 +1,1 @@
+public typealias SocialConnection = CurrentuserAPI.SocialConnectionType_deleteCurrentuserSocialConnection
