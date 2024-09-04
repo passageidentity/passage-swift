@@ -160,7 +160,8 @@ final public class PassageCurrentUser {
             let authController = PasskeyAuthorizationController()
             let credential = try await authController.requestPasskeyRegistration(
                 registrationRequest: registrationRequest,
-                includeSecurityKeyOption: options?.authenticatorAttachment == .crossPlatform
+                includeSecurityKeyOption: includeSecurityKeyOption,
+                autoUpgradeAccount: options?.isConditionalMediation == true
             )
             // Send the new Credential Handshake Response to Passage server
             let finishRequest = RegisterWebAuthnFinishRequest(

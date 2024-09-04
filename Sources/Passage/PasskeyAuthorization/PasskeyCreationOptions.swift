@@ -9,12 +9,16 @@ public struct PasskeyCreationOptions {
     
     /// Set to `true` to create a passkey without asking the user.
     ///
-    /// NOTE: Only applicable on iOS 18.0+.
+    /// NOTE: Only available on iOS 18.0+, macOS 15.0+, and visionOS 2.0+.
     public let isConditionalMediation: Bool?
     
     public init(authenticatorAttachment: AuthenticatorAttachment?, isConditionalMediation: Bool?) {
         self.authenticatorAttachment = authenticatorAttachment
-        self.isConditionalMediation = isConditionalMediation
+        if #available(iOS 18.0, macOS 15.0, visionOS 2.0, *) {
+            self.isConditionalMediation = isConditionalMediation
+        } else {
+            self.isConditionalMediation = false
+        }
     }
     
 }
