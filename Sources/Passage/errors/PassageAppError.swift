@@ -22,8 +22,7 @@ public enum PassageAppError: PassageError {
         }
         // Handle client error
         if let errorResponse = error as? ErrorResponse,
-           let (_, errorData) = PassageErrorData.getData(from: errorResponse)
-        {
+           let (_, errorData) = PassageErrorData.getData(from: errorResponse) {
             switch errorData.code {
             case Model404Code.appNotFound.rawValue:
                 return .appNotFound(message: errorData.error)

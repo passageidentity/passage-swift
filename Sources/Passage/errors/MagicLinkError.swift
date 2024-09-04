@@ -27,8 +27,7 @@ public enum MagicLinkError: PassageError {
         }
         // Handle client error
         if let errorResponse = error as? ErrorResponse,
-           let (_, errorData) = PassageErrorData.getData(from: errorResponse)
-        {
+           let (_, errorData) = PassageErrorData.getData(from: errorResponse) {
             switch errorData.code {
             case Model400Code.request.rawValue:
                 if errorData.error == "user: already exists." {

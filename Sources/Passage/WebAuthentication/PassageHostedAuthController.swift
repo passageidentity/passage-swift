@@ -61,8 +61,7 @@ final internal class HostedAuthorizationController:
             ) { [weak self] callbackURL, error in
                 guard error == nil else {
                     if let authError = error as? ASWebAuthenticationSessionError,
-                       authError.code == .canceledLogin
-                    {
+                       authError.code == .canceledLogin {
                         continuation.resume(throwing: HostedAuthorizationError.canceled())
                     } else {
                         continuation.resume(throwing: error!)
@@ -153,8 +152,7 @@ final internal class HostedAuthorizationController:
             ) { [weak self] callbackURL, error in
                 guard error == nil else {
                     if let authError = error as? ASWebAuthenticationSessionError,
-                       authError.code == .canceledLogin
-                    {
+                       authError.code == .canceledLogin {
                         continuation.resume(throwing: HostedAuthorizationError.canceled())
                     } else {
                         continuation.resume(throwing: error!)
@@ -208,7 +206,7 @@ final internal class HostedAuthorizationController:
             URLQueryItem(name: "code_challenge_method", value: codeChallengeMethod),
             URLQueryItem(name: "client_id", value: appId),
             URLQueryItem(name: "scope", value: "openid"),
-            URLQueryItem(name: "response_type", value: "code"),
+            URLQueryItem(name: "response_type", value: "code")
         ]
         guard let url = urlComponents?.url else {
             throw HostedAuthorizationError.invalidHostedAuthUrl()
