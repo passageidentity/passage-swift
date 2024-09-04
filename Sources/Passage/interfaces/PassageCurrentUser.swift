@@ -13,6 +13,7 @@ final public class PassageCurrentUser {
     /// - Returns: `CurrentUser`
     /// - Throws: `CurrentUserError`
     public func userInfo() async throws -> CurrentUser {
+        setAuthTokenHeader()
         do {
             let response = try await CurrentuserAPI.getCurrentuser(appId: appId)
             return response.user
@@ -33,6 +34,7 @@ final public class PassageCurrentUser {
     /// - Returns: `MagicLink`
     /// - Throws: `CurrentUserError`
     public func changeEmail(newEmail: String, language: String? = nil) async throws -> MagicLink {
+        setAuthTokenHeader()
         do {
             let request = UpdateUserEmailRequest(language: language, newEmail: newEmail)
             let response = try await CurrentuserAPI
@@ -47,6 +49,7 @@ final public class PassageCurrentUser {
     }
     
     public func metadata() async throws -> Metadata {
+        setAuthTokenHeader()
         do {
             let response = try await CurrentuserAPI.getCurrentuserMetadata(appId: appId)
             return response.userMetadata
@@ -56,6 +59,7 @@ final public class PassageCurrentUser {
     }
     
     public func updateMetadata(newMetaData: Metadata) async throws -> CurrentUser {
+        setAuthTokenHeader()
         do {
             let request = UpdateMetadataRequest(userMetadata: newMetaData)
             let response = try await CurrentuserAPI
@@ -81,6 +85,7 @@ final public class PassageCurrentUser {
     /// - Returns: `MagicLink`
     /// - Throws: `CurrentUserError`
     public func changePhone(newPhone: String, language: String? = nil) async throws -> MagicLink {
+        setAuthTokenHeader()
         do {
             let request = UpdateUserPhoneRequest(language: language, newPhone: newPhone)
             let response = try await CurrentuserAPI
@@ -101,6 +106,7 @@ final public class PassageCurrentUser {
     /// - Returns: `[Passkey]`
     /// - Throws: `CurrentUserError`
     public func passkeys() async throws -> [Passkey] {
+        setAuthTokenHeader()
         do {
             let response = try await CurrentuserAPI.getCurrentuserDevices(appId: appId)
             return response.devices
@@ -117,6 +123,7 @@ final public class PassageCurrentUser {
     /// - Returns: `Passkey`
     /// - Throws: `CurrentUserError`
     public func editPasskey(passkeyId: String, newFriendlyName: String) async throws -> Passkey {
+        setAuthTokenHeader()
         do {
             let request = UpdateDeviceRequest(friendlyName: newFriendlyName)
             let response = try await CurrentuserAPI
@@ -138,6 +145,7 @@ final public class PassageCurrentUser {
     /// - Throws: `CurrentUserError`
     @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
     public func addPasskey(options: PasskeyCreationOptions? = nil) async throws -> AuthResult {
+        setAuthTokenHeader()
         do {
             // Request a Registration Start Handshake from Passage server
             let authenticatorAttachment = options?.authenticatorAttachment
@@ -186,6 +194,7 @@ final public class PassageCurrentUser {
     /// - Parameter passkeyId: The id of the passkey to delete.
     /// - Throws: `CurrentUserError`
     public func deletePasskey(passkeyId: String) async throws {
+        setAuthTokenHeader()
         do {
             try await CurrentuserAPI.deleteCurrentuserDevice(appId: appId, deviceId: passkeyId)
         } catch {
@@ -200,6 +209,7 @@ final public class PassageCurrentUser {
     /// - Returns: `UserSocialConnections`
     /// - Throws: `CurrentUserError`
     public func socialConnections() async throws -> UserSocialConnections {
+        setAuthTokenHeader()
         do {
             let response = try await CurrentuserAPI.getCurrentuserSocialConnections(appId: appId)
             return response.socialConnections
@@ -213,6 +223,7 @@ final public class PassageCurrentUser {
     /// - Parameter socialConnectionType: The type of social connection to delete. Example: `.apple`
     /// - Throws: `CurrentUserError`
     public func deleteSocialConnection(socialConnectionType: SocialConnection) async throws {
+        setAuthTokenHeader()
         do {
             try await CurrentuserAPI.deleteCurrentuserSocialConnection(
                 appId: appId,
@@ -221,6 +232,11 @@ final public class PassageCurrentUser {
         } catch {
             throw CurrentUserError.convert(error: error)
         }
+    }
+    
+    private func setAuthTokenHeader() {
+        let token = PassageTokenStore(appId: appId).authToken ?? ""
+        OpenAPIClientAPI.customHeaders["Authorization"] = "Bearer \(token)"
     }
     
 }
