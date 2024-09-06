@@ -5,7 +5,7 @@ import Foundation
 public class Passage {
     
     /// The unique identifier of your Passage app.
-    public let appId: String
+    private let appId: String
     
     /// Provides access to your Passage app info and functions.
     public let app: PassageApp
