@@ -10,6 +10,9 @@ struct TestConfig {
     static let magicLinkRegisteredUserEmail = "blayne.bayer@passage.id"
     static let magicLinkUnactivatedId = "ioM1TTG0eiWMrOq9FA7X5zMN"
     
+    static let otpAppId = "pTBeTnbvm1z3U6hznMTD33Es"
+    static let otpRegisteredEmail = "authentigator+1681334202.318723@passage.id"
+    
     static let checkEmailTryCount = 8
     static let checkEmailWaitTime = UInt64(4 * Double(NSEC_PER_SEC))// nanoseconds
     

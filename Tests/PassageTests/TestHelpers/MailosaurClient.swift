@@ -1,21 +1,21 @@
 import Foundation
 import os
 
-fileprivate struct MailosaurConfig {
+private struct MailosaurConfig {
     static let serverId = "ncor7c1m" // note: this is public information
     static let apiURL = "https://mailosaur.com/api/messages"
     var apiKey = ProcessInfo.processInfo.environment["MAILOSAUR_API_KEY"]!
 }
 
-fileprivate enum URLError: Error {
+private enum URLError: Error {
     case malformed(String)
 }
 
-fileprivate struct ListMessagesResponse: Codable {
+private struct ListMessagesResponse: Codable {
     public var items: [ListMessage]
 }
 
-fileprivate struct ListMessage: Codable {
+private struct ListMessage: Codable {
     public var id: String
     public var received: String
     public var type: String
@@ -26,12 +26,12 @@ fileprivate struct ListMessage: Codable {
     public var bcc: [String]
 }
 
-fileprivate struct NameEmail: Codable {
+private struct NameEmail: Codable {
     public var name: String
     public var email: String
 }
 
-fileprivate struct GetMessageResponse: Codable {
+private struct GetMessageResponse: Codable {
     public var id: String
     public var received: String
     public var type: String
@@ -43,18 +43,18 @@ fileprivate struct GetMessageResponse: Codable {
     public var html: MessageHTML
 }
 
-fileprivate struct MessageHTML: Codable {
+private struct MessageHTML: Codable {
     public var body: String
     public var links: [MessageLink]
     public var codes: [MessageCode]
 }
 
-fileprivate struct MessageLink: Codable {
+private struct MessageLink: Codable {
     public var href: String
     public var text: String
 }
 
-fileprivate struct MessageCode: Codable {
+private struct MessageCode: Codable {
     public var value: String
 }
 
@@ -100,7 +100,7 @@ internal struct MailosaurAPIClient {
         return "Basic: \(apiKey)"
     }
     
-    fileprivate func getMessage(id: String) async throws -> GetMessageResponse {
+    private func getMessage(id: String) async throws -> GetMessageResponse {
         let url = try appUrl("/" + id)
         var request = URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData)
 
@@ -113,7 +113,7 @@ internal struct MailosaurAPIClient {
         return message
     }
     
-    fileprivate func listMessages() async throws -> [ListMessage] {
+    private func listMessages() async throws -> [ListMessage] {
         do {
             let url = try appUrl("?server=" + MailosaurConfig.serverId)
             var request = URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData)
