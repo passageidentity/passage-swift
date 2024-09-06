@@ -1,6 +1,5 @@
 import Foundation
 
-@available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
 public final class PassagePasskey {
     
     private let appId: String
@@ -16,6 +15,7 @@ public final class PassagePasskey {
     ///   - options: Options to customize how your user's passkey is created
     /// - Returns: `AuthResult`
     /// - Throws: `PassagePasskeyError`
+    @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
     public func register(
         identifier: String,
         options: PasskeyCreationOptions? = nil
@@ -58,6 +58,7 @@ public final class PassagePasskey {
     /// - Parameter identifier: The user's email, phone number, or other unique id
     /// - Returns: `AuthResult`
     /// - Throws: `PassagePasskeyError`
+    @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
     public func login(identifier: String? = nil) async throws -> AuthResult {
         do {
             // Request an Assertion Start Handshake from Passage server
@@ -95,6 +96,7 @@ public final class PassagePasskey {
     ///   - onSuccess: The method that should be called on success.
     ///   - onError: The method that should be called on error.
     #if os(iOS) || os(visionOS)
+    @available(iOS 16.0, visionOS 1.0, *)
     public func requestAutoFill(
         onSuccess: @escaping (AuthResult) -> Void,
         onError: @escaping (PassagePasskeyError) -> Void
