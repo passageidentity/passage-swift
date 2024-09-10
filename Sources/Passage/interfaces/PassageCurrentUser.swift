@@ -237,6 +237,12 @@ final public class PassageCurrentUser {
     public func logOut() async throws {
         do {
             let tokenStore = PassageTokenStore(appId: appId)
+            #if os(iOS)
+            if tokenStore.idToken != nil {
+                let hosted = PassageHosted(appId: appId)
+                try await hosted.logOut()
+            }
+            #endif
             if tokenStore.refreshToken != nil {
                 try await tokenStore.revokeRefreshToken()
             }

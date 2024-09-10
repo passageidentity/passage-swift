@@ -5,6 +5,7 @@ struct TestConfig {
     
     static let apiUrl = "https://auth-uat.passage.dev/v1"
     static let validUATAppId = "jlSg3Vr4MyKi1dcl3otVz9xa"
+    static let uatAuthOrigin = "https://try-uat.passage.dev"
     static let unregisteredUserEmail = "unregistered-test-user@passage.id"
     static let registeredUserEmail = "ricky.padilla+user01@passage.id"
     static let registeredUserId = "sjHQv68O5gnS2ipj0Rb4IkKy"

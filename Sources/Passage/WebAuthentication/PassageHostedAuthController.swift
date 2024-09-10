@@ -12,7 +12,7 @@ final internal class HostedAuthorizationController:
     private var appId: String
     private var authOrigin: String
     private var bundleId: String
-    private var verifier = ""
+    internal private(set) var verifier = ""
     private var clientState = ""
     private var safariViewController: SFSafariViewController?
     private var webAuthSession: ASWebAuthenticationSession?
@@ -192,7 +192,7 @@ final internal class HostedAuthorizationController:
     
     // MARK: - INTERNAL INSTANCE METHODS
 
-    private func getHostedStartUrl() throws -> URL {
+    internal func getHostedStartUrl() throws -> URL {
         let baseUrl = "\(authOrigin)/authorize?"
         clientState = WebAuthenticationUtils.getRandomString(length: 32)
         verifier = WebAuthenticationUtils.getRandomString(length: 32)
@@ -214,7 +214,7 @@ final internal class HostedAuthorizationController:
         return url
     }
     
-    private func getHostedFinishUrl(authCode: String) throws -> URL {
+    internal func getHostedFinishUrl(authCode: String) throws -> URL {
         let urlString = "\(authOrigin)/token"
         guard var urlComponents = URLComponents(string: urlString) else {
             throw HostedAuthorizationError.invalidHostedTokenUrl()
@@ -232,7 +232,7 @@ final internal class HostedAuthorizationController:
         return url
     }
     
-    private func getLogoutUrl(idToken: String) throws -> URL {
+    internal func getLogoutUrl(idToken: String) throws -> URL {
         let urlString = "\(authOrigin)/logout"
         guard var urlComponents = URLComponents(string: urlString) else {
             throw HostedAuthorizationError.invalidHostedLogoutUrl()
