@@ -11,6 +11,11 @@ final class PassageMagicLinkTests: XCTestCase {
         passage = Passage(appId: TestConfig.magicLinkAppId)
     }
     
+    override func tearDown() async throws {
+        try await super.tearDown()
+        try await passage.currentUser.logOut()
+    }
+    
     func testMagicLinkRegisterValid() async {
         do {
             let identifier = TestConfig.getUniqueUserIdentifier()

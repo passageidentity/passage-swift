@@ -11,6 +11,11 @@ final class PassageOTPTests: XCTestCase {
         passage = Passage(appId: TestConfig.otpAppId)
     }
     
+    override func tearDown() async throws {
+        try await super.tearDown()
+        try await passage.currentUser.logOut()
+    }
+    
     func testSendRegisterOneTimePasscodeValid() async {
         do {
             let identifier = TestConfig.getUniqueUserIdentifier()

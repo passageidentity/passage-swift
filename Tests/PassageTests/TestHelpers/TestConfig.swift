@@ -1,10 +1,13 @@
 import Foundation
 
 struct TestConfig {
+    let testAuthToken = ProcessInfo.processInfo.environment["PASSAGE_AUTH_TOKEN"]
+    
     static let apiUrl = "https://auth-uat.passage.dev/v1"
     static let validUATAppId = "jlSg3Vr4MyKi1dcl3otVz9xa"
     static let unregisteredUserEmail = "unregistered-test-user@passage.id"
     static let registeredUserEmail = "ricky.padilla+user01@passage.id"
+    static let registeredUserId = "sjHQv68O5gnS2ipj0Rb4IkKy"
     
     static let magicLinkAppId = "czLTOVFIytGqrhRVoHV9o8Wo"
     static let magicLinkRegisteredUserEmail = "blayne.bayer@passage.id"
