@@ -3,7 +3,7 @@ import Foundation
 public enum OneTimePasscodeError: PassageError {
     
     case exceededAttempts(message: String)
-    case invalidIdentifier(message: String)
+    case invalidRequest(message: String)
     case unspecified(message: String)
     case userAlreadyExists(message: String)
     case userDoesNotExist(message: String)
@@ -12,7 +12,7 @@ public enum OneTimePasscodeError: PassageError {
         switch self {
         case
             .exceededAttempts(message: let message),
-            .invalidIdentifier(message: let message),
+            .invalidRequest(message: let message),
             .unspecified(let message),
             .userAlreadyExists(let message),
             .userDoesNotExist(let message):
@@ -33,7 +33,7 @@ public enum OneTimePasscodeError: PassageError {
                 if errorData.error == "user: already exists." {
                     return .userAlreadyExists(message: errorData.error)
                 } else {
-                    return .invalidIdentifier(message: errorData.error)
+                    return .invalidRequest(message: errorData.error)
                 }
             case Model404Code.userNotFound.rawValue:
                 return .userDoesNotExist(message: errorData.error)

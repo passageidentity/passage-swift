@@ -1,21 +1,28 @@
 import Foundation
-import Security
 
 internal class PassageKeychainService {
     
     private let service = Bundle.main.bundleIdentifier ?? "PassageKeychainService"
     
-    internal func addString(key: String, value: String) {
-        let data = Data(value.utf8)
-        let query: [String: Any] = [
+    @discardableResult
+    internal func addString(key: String, value: String) -> Bool {
+        let valueData = Data(value.utf8)
+        let addQuery: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
             kSecAttrAccount as String: key,
-            kSecValueData as String: data
+            kSecAttrSynchronizable as String: kCFBooleanFalse!,
+            kSecAttrAccessible as String: kSecAttrAccessibleWhenUnlocked,
+            kSecValueData as String: valueData
         ]
-        // Remove any existing item before adding
-        SecItemDelete(query as CFDictionary)
-        SecItemAdd(query as CFDictionary, nil)
+        let status = SecItemAdd(addQuery as CFDictionary, nil)
+        switch status {
+        case errSecSuccess: return true
+        case errSecDuplicateItem: return updateString(key: key, value: value)
+        default:
+            print("Failed to add item to keychain with error: \(status)")
+            return false
+        }
     }
     
     internal func getString(key: String) -> String? {
@@ -29,31 +36,47 @@ internal class PassageKeychainService {
         var dataTypeRef: AnyObject?
         let status = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
         if status == errSecSuccess, let data = dataTypeRef as? Data {
-            return String(data: data, encoding: .utf8)
+            return String(decoding: data, as: UTF8.self)
+        } else {
+            print("Failed to get item from keychain with error: \(status)")
+            return nil
         }
-        return nil
     }
-    
-    internal func updateString(key: String, value: String) {
-        let data = Data(value.utf8)
+
+    @discardableResult
+    internal func updateString(key: String, value: String) -> Bool {
+        let valueData = Data(value.utf8)
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
             kSecAttrAccount as String: key
         ]
         let attributes: [String: Any] = [
-            kSecValueData as String: data
+            kSecValueData as String: valueData
         ]
-        SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
+        let status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
+        switch status {
+        case errSecSuccess: return true
+        default:
+            print("Failed to update item in keychain with error: \(status)")
+            return false
+        }
     }
     
-    internal func deleteString(key: String) {
+    @discardableResult
+    internal func deleteString(key: String) -> Bool {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
             kSecAttrAccount as String: key
         ]
-        SecItemDelete(query as CFDictionary)
+        let status = SecItemDelete(query as CFDictionary)
+        switch status {
+        case errSecSuccess: return true
+        default:
+            print("Failed to remove item from keychain with error: \(status)")
+            return false
+        }
     }
     
 }

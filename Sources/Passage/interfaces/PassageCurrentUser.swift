@@ -234,9 +234,32 @@ final public class PassageCurrentUser {
         }
     }
     
-    private func setAuthTokenHeader() {
-        let token = PassageTokenStore(appId: appId).authToken ?? ""
-        OpenAPIClientAPI.customHeaders["Authorization"] = "Bearer \(token)"
+    public func logOut() async throws {
+        do {
+            let tokenStore = PassageTokenStore(appId: appId)
+            #if os(iOS)
+            if tokenStore.idToken != nil {
+                let hosted = PassageHosted(appId: appId)
+                try await hosted.logOut()
+            }
+            #endif
+            if tokenStore.refreshToken != nil {
+                try await tokenStore.revokeRefreshToken()
+            }
+            OpenAPIClientAPI.customHeaders["Authorization"] = nil
+            tokenStore.clearTokenStore()
+        } catch {
+            throw CurrentUserError.convert(error: error)
+        }
+    }
+    
+    internal func setAuthTokenHeader(authToken: String? = nil) {
+        let prefix = "Bearer "
+        let token = authToken ??
+            PassageTokenStore(appId: appId).authToken ??
+            OpenAPIClientAPI.customHeaders["Authorization"]?.replacingOccurrences(of: prefix, with: "") ??
+            ""
+        OpenAPIClientAPI.customHeaders["Authorization"] = prefix + token
     }
     
 }

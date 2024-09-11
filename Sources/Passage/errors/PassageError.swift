@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol PassageError: Error, LocalizedError {
+public protocol PassageError: Error, Equatable, LocalizedError {
     static func convert(error: Error) -> Self
     var errorDescription: String { get }
 }
