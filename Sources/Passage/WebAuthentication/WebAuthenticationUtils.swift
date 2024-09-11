@@ -7,7 +7,7 @@ internal struct WebAuthenticationUtils {
         let characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         var randomString = ""
         for _ in 0..<length {
-            let randomValue = Int(arc4random_uniform(UInt32(characters.count)))
+            let randomValue = Int.random(in: 0..<characters.count)
             randomString += String(
                 characters[
                     characters.index(characters.startIndex, offsetBy: randomValue)

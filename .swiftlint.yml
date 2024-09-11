@@ -19,6 +19,10 @@ force_cast: error # implicitly
 force_try:
   severity: error # explicitly
 
+disabled_rules:
+  # this rule triggers false warnings
+  - non_optional_string_data_conversion
+
 # rules that have both warning and error levels, can set just the warning level
 # implicitly
 line_length: 110
