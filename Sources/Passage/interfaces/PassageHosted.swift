@@ -1,7 +1,6 @@
 import Foundation
 
 /// A class for enabling user authentication via a secure hosted web view.
-#if os(iOS)
 public class PassageHosted {
     
     private let appId: String
@@ -12,7 +11,7 @@ public class PassageHosted {
         self.appId = appId
         tokenStore = PassageTokenStore(appId: appId)
     }
-    
+    #if os(iOS)
     /// Authentication method for Passage Hosted apps
     ///
     /// If your Passage app is Hosted, use this method to register and log in your user.
@@ -22,6 +21,7 @@ public class PassageHosted {
     ///
     /// - Returns: `AuthResult`
     /// - Throws: `HostedAuthorizationError`
+    @discardableResult
     public func authorize() async throws -> AuthResult {
         if authOrigin == nil {
             authOrigin = try? await PassageApp(appId: appId).info().authOrigin
@@ -63,6 +63,6 @@ public class PassageHosted {
             try await hostedAuthController.logoutSafari(idToken: idToken)
         }
     }
-
+    #endif
 }
-#endif
+

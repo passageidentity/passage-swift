@@ -19,9 +19,7 @@ internal class PassageKeychainService {
         switch status {
         case errSecSuccess: return true
         case errSecDuplicateItem: return updateString(key: key, value: value)
-        default:
-            print("Failed to add item to keychain with error: \(status)")
-            return false
+        default: return false
         }
     }
     
@@ -38,7 +36,6 @@ internal class PassageKeychainService {
         if status == errSecSuccess, let data = dataTypeRef as? Data {
             return String(decoding: data, as: UTF8.self)
         } else {
-            print("Failed to get item from keychain with error: \(status)")
             return nil
         }
     }
@@ -55,12 +52,7 @@ internal class PassageKeychainService {
             kSecValueData as String: valueData
         ]
         let status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
-        switch status {
-        case errSecSuccess: return true
-        default:
-            print("Failed to update item in keychain with error: \(status)")
-            return false
-        }
+        return status == errSecSuccess
     }
     
     @discardableResult
@@ -71,12 +63,7 @@ internal class PassageKeychainService {
             kSecAttrAccount as String: key
         ]
         let status = SecItemDelete(query as CFDictionary)
-        switch status {
-        case errSecSuccess: return true
-        default:
-            print("Failed to remove item from keychain with error: \(status)")
-            return false
-        }
+        return status == errSecSuccess
     }
     
 }

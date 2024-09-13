@@ -70,6 +70,7 @@ public class PassageMagicLink {
     /// - Parameter magicLink: full magic link (sent via email or text to the user)
     /// - Returns: `AuthResult` The AuthResult struct contains the user's  authentication token.
     /// - Throws: `MagicLinkError`
+    @discardableResult
     public func activate(magicLink: String) async throws -> AuthResult {
         do {
             let request = ActivateMagicLinkRequest(magicLink: magicLink)

@@ -14,21 +14,18 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/Flight-School/AnyCodable", exact: "0.6.1"),
-        .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins", exact: "0.55.1")
+        .package(url: "https://github.com/Flight-School/AnyCodable", exact: "0.6.1")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "Passage",
-            dependencies: ["AnyCodable"],
-            plugins: [.plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")]
+            dependencies: ["AnyCodable"]
         ),
         .testTarget(
             name: "PassageTests",
-            dependencies: ["Passage"],
-            plugins: [.plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")]
+            dependencies: ["Passage"]
         ),
     ]
 )

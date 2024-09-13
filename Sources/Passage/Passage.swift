@@ -41,6 +41,7 @@ public class Passage {
     /// - Parameter appId: The unique identifier for the Passage application.
     public init(appId: String) {
         self.appId = appId
+        PassageClientService.setup()
         app = PassageApp(appId: appId)
         passkey = PassagePasskey(appId: appId)
         magicLink = PassageMagicLink(appId: appId)
