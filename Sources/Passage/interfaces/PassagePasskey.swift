@@ -18,6 +18,7 @@ public final class PassagePasskey {
     /// - Returns: `AuthResult`
     /// - Throws: `PassagePasskeyError`
     @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
+    @discardableResult
     public func register(
         identifier: String,
         options: PasskeyCreationOptions? = nil
@@ -34,7 +35,7 @@ public final class PassagePasskey {
             )
             // Use the Registration Start Handshake to prompt the app user to create a passkey
             let registrationRequest = try PasskeyRegistrationRequest.from(startResponse)
-            let authController = PasskeyAuthorizationController()
+            let authController = PasskeyAuthenticationController()
             let credential = try await authController.requestPasskeyRegistration(
                 registrationRequest: registrationRequest,
                 includeSecurityKeyOption: options?.authenticatorAttachment == .crossPlatform
@@ -62,6 +63,7 @@ public final class PassagePasskey {
     /// - Returns: `AuthResult`
     /// - Throws: `PassagePasskeyError`
     @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
+    @discardableResult
     public func login(identifier: String? = nil) async throws -> AuthResult {
         do {
             // Request an Assertion Start Handshake from Passage server
@@ -72,7 +74,7 @@ public final class PassagePasskey {
             )
             // Use the Assertion Start Handshake to prompt the app user to select a passkey
             let assertionRequest = try PasskeyAssertionRequest.from(startResponse)
-            let authController = PasskeyAuthorizationController()
+            let authController = PasskeyAuthenticationController()
             let credential = try await authController.requestPasskeyAssertion(
                 assertionRequest: assertionRequest
             )
@@ -116,7 +118,7 @@ public final class PassagePasskey {
                 // Use the Assertion Start Handshake to prompt the app user to select the
                 // passkey provided in the keyboard autofill.
                 let assertionRequest = try PasskeyAssertionRequest.from(startResponse)
-                let authController = PasskeyAuthorizationController()
+                let authController = PasskeyAuthenticationController()
                 let credential = try await authController
                     .requestPasskeyAssertionAutoFill(
                         assertionRequest: assertionRequest

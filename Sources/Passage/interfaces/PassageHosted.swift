@@ -22,6 +22,7 @@ public class PassageHosted {
     ///
     /// - Returns: `AuthResult`
     /// - Throws: `HostedAuthorizationError`
+    @discardableResult
     public func authorize() async throws -> AuthResult {
         if authOrigin == nil {
             authOrigin = try? await PassageApp(appId: appId).info().authOrigin

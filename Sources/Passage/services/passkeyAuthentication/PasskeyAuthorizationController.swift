@@ -1,7 +1,7 @@
 import AuthenticationServices
 
 @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
-internal class PasskeyAuthorizationController:
+internal class PasskeyAuthenticationController:
     NSObject,
     ASAuthorizationControllerDelegate {
     
@@ -29,8 +29,8 @@ internal class PasskeyAuthorizationController:
                     .createCredentialRegistrationRequest(
                         challenge: registrationRequest.challenge,
                         name: registrationRequest.userName,
-                        userID: registrationRequest.userId,
-                        requestStyle: .conditional
+                        userID: registrationRequest.userId//,
+//                        requestStyle: .conditional
                     )
             }
         }
@@ -154,7 +154,7 @@ internal class PasskeyAuthorizationController:
 }
 
 @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
-extension PasskeyAuthorizationController: ASAuthorizationControllerPresentationContextProviding {
+extension PasskeyAuthenticationController: ASAuthorizationControllerPresentationContextProviding {
     
     #if os(iOS) || os(visionOS)
     @available(iOS 16.0, visionOS 1.0, *)

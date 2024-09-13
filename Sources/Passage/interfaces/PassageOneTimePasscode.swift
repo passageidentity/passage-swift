@@ -72,6 +72,7 @@ public class PassageOneTimePasscode {
     /// - Parameter id: string - The one-time passcode id returned from login or register method
     /// - Returns: `AuthResult` The AuthResult struct contains the user's authentication token.
     /// - Throws: `OneTimePasscodeError`
+    @discardableResult
     public func activate(otp: String, id: String) async throws -> AuthResult {
         do {
             let request = ActivateOneTimePasscodeRequest(

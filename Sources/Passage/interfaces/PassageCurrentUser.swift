@@ -144,6 +144,7 @@ final public class PassageCurrentUser {
     /// - Returns: `AuthResult`
     /// - Throws: `CurrentUserError`
     @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
+    @discardableResult
     public func addPasskey(options: PasskeyCreationOptions? = nil) async throws -> AuthResult {
         setAuthTokenHeader()
         do {
@@ -165,7 +166,7 @@ final public class PassageCurrentUser {
                 user: startResponse.user
             )
             let registrationRequest = try PasskeyRegistrationRequest.from(registerResponse)
-            let authController = PasskeyAuthorizationController()
+            let authController = PasskeyAuthenticationController()
             let credential = try await authController.requestPasskeyRegistration(
                 registrationRequest: registrationRequest,
                 includeSecurityKeyOption: includeSecurityKeyOption,

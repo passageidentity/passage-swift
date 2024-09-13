@@ -25,6 +25,7 @@ public class PassageSocial {
     ///   Defaults to false.
     /// - Returns: `AuthResult`
     /// - Throws: `SocialAuthError`
+    @discardableResult
     public func authorize(
        connection: PassageSocialConnection,
        prefersEphemeralWebBrowserSession: Bool = false
