@@ -3,9 +3,11 @@ import Foundation
 public final class PassagePasskey {
     
     private let appId: String
+    private let tokenStore: PassageTokenStore
     
     init(appId: String) {
         self.appId = appId
+        tokenStore = PassageTokenStore(appId: appId)
     }
     
     /// Register a user using a passkey.
@@ -47,6 +49,7 @@ public final class PassagePasskey {
                 appId: appId,
                 registerWebAuthnFinishRequest: finishRequest
             )
+            tokenStore.setTokens(authResult: finishResponse.authResult)
             return finishResponse.authResult
         } catch {
             throw PassagePasskeyError.convert(error: error)
@@ -83,6 +86,7 @@ public final class PassagePasskey {
                 appId: appId,
                 loginWebAuthnFinishRequest: finishRequest
             )
+            tokenStore.setTokens(authResult: finishResponse.authResult)
             return finishResponse.authResult
         } catch {
             throw PassagePasskeyError.convert(error: error)
@@ -127,6 +131,7 @@ public final class PassagePasskey {
                     appId: appId,
                     loginWebAuthnFinishRequest: finishRequest
                 )
+                tokenStore.setTokens(authResult: finishResponse.authResult)
                 onSuccess(finishResponse.authResult)
             } catch {
                 onError(PassagePasskeyError.convert(error: error))
