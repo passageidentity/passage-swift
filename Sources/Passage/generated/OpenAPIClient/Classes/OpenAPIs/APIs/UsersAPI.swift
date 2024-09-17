@@ -61,10 +61,10 @@ open class UsersAPI {
      
      - parameter appId: (path) App ID 
      - parameter createUserParams: (body) user options 
-     - returns: UserResponse
+     - returns: CreateUserResponse
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func createUser(appId: String, createUserParams: CreateUserParams) async throws -> UserResponse {
+    open class func createUser(appId: String, createUserParams: CreateUserParams) async throws -> CreateUserResponse {
         return try await createUserWithRequestBuilder(appId: appId, createUserParams: createUserParams).execute().body
     }
 
@@ -74,9 +74,9 @@ open class UsersAPI {
      - Create a user
      - parameter appId: (path) App ID 
      - parameter createUserParams: (body) user options 
-     - returns: RequestBuilder<UserResponse> 
+     - returns: RequestBuilder<CreateUserResponse> 
      */
-    open class func createUserWithRequestBuilder(appId: String, createUserParams: CreateUserParams) -> RequestBuilder<UserResponse> {
+    open class func createUserWithRequestBuilder(appId: String, createUserParams: CreateUserParams) -> RequestBuilder<CreateUserResponse> {
         var localVariablePath = "/apps/{app_id}/users"
         let appIdPreEscape = "\(APIHelper.mapValueToPathItem(appId))"
         let appIdPostEscape = appIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -92,7 +92,7 @@ open class UsersAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<UserResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<CreateUserResponse>.Type = OpenAPIClientAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
     }

@@ -18,6 +18,7 @@ public final class PassagePasskey {
     /// - Returns: `AuthResult`
     /// - Throws: `PassagePasskeyError`
     @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
+    @available(watchOS, unavailable)
     @discardableResult
     public func register(
         identifier: String,
@@ -63,6 +64,7 @@ public final class PassagePasskey {
     /// - Returns: `AuthResult`
     /// - Throws: `PassagePasskeyError`
     @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
+    @available(watchOS, unavailable)
     @discardableResult
     public func login(identifier: String? = nil) async throws -> AuthResult {
         do {
