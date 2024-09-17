@@ -1,7 +1,6 @@
 import Foundation
 
 /// A class for enabling user authentication via social providers like Apple, Google, and GitHub.
-#if !os(tvOS)
 public class PassageSocial {
     
     private let appId: String
@@ -11,7 +10,7 @@ public class PassageSocial {
         self.appId = appId
         tokenStore = PassageTokenStore(appId: appId)
     }
-    
+    #if os(iOS) || os(macOS) || os(visionOS)
     /// Authorizes user via a supported third-party social provider.
     ///
     /// Using `PassageSocialConnection.apple` connection triggers the native Sign in with Apple
@@ -77,6 +76,7 @@ public class PassageSocial {
     internal func getSocialAuthUrl(queryParams: String) -> URL? {
         return URL(string: "\(OpenAPIClientAPI.basePath)/apps/\(appId)/social/authorize?\(queryParams)")
     }
+    #endif
 
 }
-#endif
+

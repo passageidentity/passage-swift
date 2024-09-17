@@ -8,7 +8,7 @@ public enum PassageSocialConnection: String {
     case google
 }
 
-#if !os(tvOS)
+#if os(iOS) || os(macOS) || os(visionOS)
 final internal class PassageSocialAuthController:
     NSObject,
     ASWebAuthenticationPresentationContextProviding,

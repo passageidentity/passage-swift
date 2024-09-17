@@ -1,6 +1,7 @@
 import AuthenticationServices
 
 @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
+@available(watchOS, unavailable)
 internal class PasskeyAuthenticationController:
     NSObject,
     ASAuthorizationControllerDelegate {
@@ -154,10 +155,12 @@ internal class PasskeyAuthenticationController:
 }
 
 @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
+@available(watchOS, unavailable)
 extension PasskeyAuthenticationController: ASAuthorizationControllerPresentationContextProviding {
     
-    #if os(iOS) || os(visionOS)
     @available(iOS 16.0, visionOS 1.0, *)
+    @available(tvOS, unavailable)
+    @available(macOS, unavailable)
     internal func requestPasskeyAssertionAutoFill (
         assertionRequest: PasskeyAssertionRequest
     ) async throws -> ASAuthorizationPublicKeyCredentialAssertion {
@@ -181,10 +184,9 @@ extension PasskeyAuthenticationController: ASAuthorizationControllerPresentation
             }
         )
     }
-    #endif
     
     // MARK: - ASAuthorizationControllerPresentationContextProviding Methods
-    
+    #if !os(watchOS)
     internal func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         #if os(macOS)
         return NSApp.windows.last(where: \.isKeyWindow) ?? ASPresentationAnchor()
@@ -192,5 +194,6 @@ extension PasskeyAuthenticationController: ASAuthorizationControllerPresentation
         return UIApplication.shared.windows.last(where: \.isKeyWindow) ?? ASPresentationAnchor()
         #endif
     }
+    #endif
     
 }

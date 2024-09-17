@@ -1,7 +1,7 @@
 import AuthenticationServices
+#if os(iOS)
 import SafariServices
 
-#if os(iOS)
 final internal class HostedAuthorizationController:
     NSObject,
     ASWebAuthenticationPresentationContextProviding,
