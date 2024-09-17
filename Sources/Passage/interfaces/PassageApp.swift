@@ -59,14 +59,11 @@ public class PassageApp {
                 identifier: identifier,
                 userMetadata: userMetadata
             )
-            let resposne = try await UsersAPI.createUser(
+            let response = try await UsersAPI.createUser(
                 appId: appId,
                 createUserParams: params
             )
-            guard let user = resposne.user else {
-                throw PassageAppError.invalidRequest(message: "invalid request")
-            }
-            return user
+            return response.user
         } catch {
             throw PassageAppError.convert(error: error)
         }

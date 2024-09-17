@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 .swiftformat
 Cartfile
 OpenAPIClient.podspec
@@ -39,6 +38,7 @@ OpenAPIClient/Classes/OpenAPIs/Models/AuthenticateWebAuthnStartWithTransactionRe
 OpenAPIClient/Classes/OpenAPIs/Models/AuthenticatorAttachment.swift
 OpenAPIClient/Classes/OpenAPIs/Models/CreatePasskeyReadinessRequest.swift
 OpenAPIClient/Classes/OpenAPIs/Models/CreateUserParams.swift
+OpenAPIClient/Classes/OpenAPIs/Models/CreateUserResponse.swift
 OpenAPIClient/Classes/OpenAPIs/Models/Credential.swift
 OpenAPIClient/Classes/OpenAPIs/Models/CredentialAssertionChallenge.swift
 OpenAPIClient/Classes/OpenAPIs/Models/CredentialAssertionResponse.swift
@@ -145,6 +145,7 @@ docs/AuthenticateWebAuthnStartWithTransactionResponse.md
 docs/AuthenticatorAttachment.md
 docs/CreatePasskeyReadinessRequest.md
 docs/CreateUserParams.md
+docs/CreateUserResponse.md
 docs/Credential.md
 docs/CredentialAssertionChallenge.md
 docs/CredentialAssertionResponse.md
