@@ -10,6 +10,7 @@ public class PassageSocial {
         self.appId = appId
         tokenStore = PassageTokenStore(appId: appId)
     }
+
     #if os(iOS) || os(macOS) || os(visionOS)
     /// Authorizes user via a supported third-party social provider.
     ///

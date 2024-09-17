@@ -184,7 +184,7 @@ extension PasskeyAuthenticationController: ASAuthorizationControllerPresentation
             }
         )
     }
-    
+
     // MARK: - ASAuthorizationControllerPresentationContextProviding Methods
     #if !os(watchOS)
     internal func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {

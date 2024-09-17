@@ -299,5 +299,4 @@ extension HostedAuthorizationController:
     }
     
 }
-
 #endif
