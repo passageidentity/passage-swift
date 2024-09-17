@@ -31,7 +31,7 @@ internal class PasskeyAuthenticationController:
                         challenge: registrationRequest.challenge,
                         name: registrationRequest.userName,
                         userID: registrationRequest.userId,
-                       requestStyle: .conditional
+                        requestStyle: .conditional
                     )
             }
         }
