@@ -79,4 +79,3 @@ public class PassageSocial {
     #endif
 
 }
-

@@ -2,10 +2,7 @@ import AuthenticationServices
 #if os(iOS)
 import SafariServices
 
-final internal class HostedAuthorizationController:
-    NSObject,
-    ASWebAuthenticationPresentationContextProviding,
-    SFSafariViewControllerDelegate {
+final internal class HostedAuthorizationController: NSObject {
     
     // MARK: - INSTANCE PROPERTIES
     
@@ -131,7 +128,7 @@ final internal class HostedAuthorizationController:
     
     @MainActor
     @available(iOS 17.4, macOS 14.4, *)
-    func logout(idToken: String) async throws {
+    internal func logout(idToken: String) async throws {
         let url = try getLogoutUrl(idToken: idToken)
         guard
             let logoutUrl = URL(string: logoutUrlString),
@@ -267,6 +264,12 @@ final internal class HostedAuthorizationController:
         return UIApplication.shared.windows.last(where: \.isKeyWindow) ?? ASPresentationAnchor()
     }
     
+}
+
+extension HostedAuthorizationController:
+    ASWebAuthenticationPresentationContextProviding,
+    SFSafariViewControllerDelegate {
+    
     // MARK: - SFSafariViewControllerDelegate METHODS
     
     internal func safariViewController(
@@ -296,4 +299,5 @@ final internal class HostedAuthorizationController:
     }
     
 }
+
 #endif
