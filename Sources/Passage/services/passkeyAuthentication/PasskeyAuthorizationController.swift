@@ -30,8 +30,8 @@ internal class PasskeyAuthenticationController:
                     .createCredentialRegistrationRequest(
                         challenge: registrationRequest.challenge,
                         name: registrationRequest.userName,
-                        userID: registrationRequest.userId//,
-//                        requestStyle: .conditional
+                        userID: registrationRequest.userId,
+                       requestStyle: .conditional
                     )
             }
         }
