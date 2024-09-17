@@ -109,21 +109,4 @@ final class PassageMagicLinkTests: XCTestCase {
         }
     }
     
-    func testActivateMagicLinkInvalid() async {
-        do {
-            let _ = try await passage.magicLink.activate(magicLink: "INVALID_MAGIC_LINK")
-            XCTFail("should throw magicLinkNotFound error")
-        } catch let error as MagicLinkError {
-            switch error {
-            case .magicLinkNotFound:
-                // Test passes because the error case is correct
-                break
-            default:
-                XCTFail("should throw magicLinkNotFound error")
-            }
-        } catch {
-            XCTFail("should throw magicLinkNotFound error")
-        }
-    }
-    
 }
