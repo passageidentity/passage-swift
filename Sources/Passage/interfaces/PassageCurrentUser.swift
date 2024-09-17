@@ -144,6 +144,7 @@ final public class PassageCurrentUser {
     /// - Returns: `AuthResult`
     /// - Throws: `CurrentUserError`
     @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
+    @available(watchOS, unavailable)
     @discardableResult
     public func addPasskey(options: PasskeyCreationOptions? = nil) async throws -> AuthResult {
         setAuthTokenHeader()

@@ -11,6 +11,7 @@ public class PassageHosted {
         self.appId = appId
         tokenStore = PassageTokenStore(appId: appId)
     }
+
     #if os(iOS)
     /// Authentication method for Passage Hosted apps
     ///
@@ -65,4 +66,3 @@ public class PassageHosted {
     }
     #endif
 }
-

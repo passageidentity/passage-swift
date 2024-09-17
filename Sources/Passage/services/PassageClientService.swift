@@ -1,5 +1,7 @@
 #if os(macOS)
 import Foundation
+#elseif os(watchOS)
+import WatchKit
 #else
 import UIKit
 #endif

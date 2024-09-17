@@ -62,7 +62,7 @@ No authorization required
 
 # **createUser**
 ```swift
-    open class func createUser(appId: String, createUserParams: CreateUserParams, completion: @escaping (_ data: UserResponse?, _ error: Error?) -> Void)
+    open class func createUser(appId: String, createUserParams: CreateUserParams, completion: @escaping (_ data: CreateUserResponse?, _ error: Error?) -> Void)
 ```
 
 Create User
@@ -99,7 +99,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**UserResponse**](UserResponse.md)
+[**CreateUserResponse**](CreateUserResponse.md)
 
 ### Authorization
 

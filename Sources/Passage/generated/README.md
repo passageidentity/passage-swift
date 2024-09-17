@@ -88,6 +88,7 @@ Class | Method | HTTP request | Description
  - [AuthenticatorAttachment](docs/AuthenticatorAttachment.md)
  - [CreatePasskeyReadinessRequest](docs/CreatePasskeyReadinessRequest.md)
  - [CreateUserParams](docs/CreateUserParams.md)
+ - [CreateUserResponse](docs/CreateUserResponse.md)
  - [Credential](docs/Credential.md)
  - [CredentialAssertionChallenge](docs/CredentialAssertionChallenge.md)
  - [CredentialAssertionResponse](docs/CredentialAssertionResponse.md)
