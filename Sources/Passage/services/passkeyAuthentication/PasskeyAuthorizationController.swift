@@ -24,6 +24,7 @@ internal class PasskeyAuthenticationController:
                 name: registrationRequest.userName,
                 userID: registrationRequest.userId
             )
+        #if os(iOS) || os(macOS) || os(visionOS)
         if #available(iOS 18.0, macOS 15.0, visionOS 2.0, *) {
             if autoUpgradeAccount {
                 platformRegistrationRequest = publicKeyCredentialProvider
@@ -35,6 +36,7 @@ internal class PasskeyAuthenticationController:
                     )
             }
         }
+        #endif
         // To match other webauthn "cross-platform" behaviors, we always include a Platform provider
         // request, never JUST a Security Key provider request.
         var requests: [ASAuthorizationRequest] = [ platformRegistrationRequest ]
