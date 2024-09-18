@@ -1,0 +1,370 @@
+name: Create Release
+on:
+  workflow_dispatch:
+    inputs:
+      release-type:
+        required: true
+        type: choice
+        description: What type of release
+        options:
+          - major
+          - minor
+          - patch
+
+jobs:
+  determine-next-versions:
+    name: Determine next version
+    runs-on: ubuntu-latest
+
+    outputs:
+      next-major: ${{ steps.nexttag.outputs.major }}
+      next-minor: ${{ steps.nexttag.outputs.minor }}
+      next-patch: ${{ steps.nexttag.outputs.patch }}
+      branch-major: ${{ steps.branchnames.outputs.major-branch }}
+      branch-minor: ${{ steps.branchnames.outputs.minor-branch }}
+      branch-patch: ${{ steps.branchnames.outputs.patch-branch }}
+
+    steps:
+      - name: check out code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get Previous Tag
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 0.0.0
+
+      - name: Get Next Versions
+        id: nexttag
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{ steps.previoustag.outputs.tag }}
+
+      - name: Build Branch Names
+        id: branchnames
+        run: |
+          echo "major-branch=release-major-v${{ steps.nexttag.outputs.major }}" >> $GITHUB_OUTPUT
+          echo "minor-branch=release-minor-v${{ steps.nexttag.outputs.minor }}" >> $GITHUB_OUTPUT
+          echo "patch-branch=release-patch-v${{ steps.nexttag.outputs.patch }}" >> $GITHUB_OUTPUT
+
+  create-release-branch:
+    name: Create Release Branch
+    runs-on: ubuntu-latest
+    needs: determine-next-versions
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Create major release branch
+        if: ${{ github.event.inputs.release-type == 'major' }}
+        run: |
+          git checkout -b ${{needs.determine-next-versions.outputs.branch-major}}
+          git push origin ${{needs.determine-next-versions.outputs.branch-major}}
+
+      - name: Create minor release branch
+        if: ${{ github.event.inputs.release-type == 'minor' }}
+        run: |
+          git checkout -b ${{needs.determine-next-versions.outputs.branch-minor}}
+          git push origin ${{needs.determine-next-versions.outputs.branch-minor}}
+
+      - name: Create patch release branch
+        if: ${{ github.event.inputs.release-type == 'patch' }}
+        run: |
+          git checkout -b ${{needs.determine-next-versions.outputs.branch-patch}}
+          git push origin ${{needs.determine-next-versions.outputs.branch-patch}}
+
+  bump-version:
+    name: Bump the version
+    runs-on: ubuntu-latest
+    needs: [determine-next-versions, create-release-branch]
+
+    steps:
+      - name: Check out code - major release
+        uses: actions/checkout@v3
+        if: ${{ github.event.inputs.release-type == 'major' }}
+        with:
+          ref: ${{needs.determine-next-versions.outputs.branch-major}}
+
+      - name: Check out code - minor release
+        uses: actions/checkout@v3
+        if: ${{ github.event.inputs.release-type == 'minor' }}
+        with:
+          ref: ${{needs.determine-next-versions.outputs.branch-minor}}
+
+      - name: Check out code - patch release
+        uses: actions/checkout@v3
+        if: ${{ github.event.inputs.release-type == 'patch' }}
+        with:
+          ref: ${{needs.determine-next-versions.outputs.branch-patch}}
+
+      - name: Update major version
+        uses: jsdaniell/create-json@v1.2.2
+        if: ${{ github.event.inputs.release-type == 'major' }}
+        with:
+          name: "settings.json"
+          dir: "./Sources/Passage/Resources/"
+          json: "{\n\t\"version\": \"${{ needs.determine-next-versions.outputs.next-major }}\"\n}"
+
+      - name: Update minor version
+        uses: jsdaniell/create-json@v1.2.2
+        if: ${{ github.event.inputs.release-type == 'minor' }}
+        with:
+          name: "settings.json"
+          dir: "./Sources/Passage/Resources/"
+          json: "{\n\t\"version\": \"${{ needs.determine-next-versions.outputs.next-minor }}\"\n}"
+
+      - name: Update patch version
+        uses: jsdaniell/create-json@v1.2.2
+        if: ${{ github.event.inputs.release-type == 'patch' }}
+        with:
+          name: "settings.json"
+          dir: "./Sources/Passage/Resources/"
+          json: "{\n\t\"version\": \"${{ needs.determine-next-versions.outputs.next-patch }}\"\n}"
+
+      - name: Commit major version change
+        uses: stefanzweifel/git-auto-commit-action@v4
+        if: ${{ github.event.inputs.release-type == 'major' }}
+        with:
+          commit_message: "Generated and Updated Major Version to ${{ needs.determine-next-versions.outputs.next-major }}"
+          branch: ${{needs.determine-next-versions.outputs.branch-major}}
+
+      - name: Commit minor version change
+        uses: stefanzweifel/git-auto-commit-action@v4
+        if: ${{ github.event.inputs.release-type == 'minor' }}
+        with:
+          commit_message: "Generated and Updated Minor Version to ${{ needs.determine-next-versions.outputs.next-minor }}"
+          branch: ${{needs.determine-next-versions.outputs.branch-minor}}
+
+      - name: Commit patch version change
+        uses: stefanzweifel/git-auto-commit-action@v4
+        if: ${{ github.event.inputs.release-type == 'patch' }}
+        with:
+          commit_message: "Generated and Updated Patch Version to ${{ needs.determine-next-versions.outputs.next-patch }}"
+          branch: ${{needs.determine-next-versions.outputs.branch-patch}}
+
+  tag-and-create-release:
+    name: Tag Release
+    runs-on: ubuntu-latest
+    needs:
+      [
+        determine-next-versions,
+        create-release-branch,
+        bump-version,
+      ]
+
+    steps:
+      - name: Check out code - major release
+        uses: actions/checkout@v3
+        if: ${{ github.event.inputs.release-type == 'major' }}
+        with:
+          ref: ${{needs.determine-next-versions.outputs.branch-major}}
+
+      - name: Check out code - minor release
+        uses: actions/checkout@v3
+        if: ${{ github.event.inputs.release-type == 'minor' }}
+        with:
+          ref: ${{needs.determine-next-versions.outputs.branch-minor}}
+
+      - name: Check out code - patch release
+        uses: actions/checkout@v3
+        if: ${{ github.event.inputs.release-type == 'patch' }}
+        with:
+          ref: ${{needs.determine-next-versions.outputs.branch-patch}}
+
+      - name: Tag Major
+        if: ${{ github.event.inputs.release-type == 'major' }}
+        run: |
+          tag='v${{ needs.determine-next-versions.outputs.next-major }}'
+          message='Push tag for new major release v${{ needs.determine-next-versions.outputs.next-major }}'
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git tag -a "${tag}" -m "${message}"
+          git push origin "${tag}"
+
+      - name: Tag Minor
+        if: ${{ github.event.inputs.release-type == 'minor' }}
+        run: |
+          tag='v${{ needs.determine-next-versions.outputs.next-minor }}'
+          message='Push tag for new minor release v${{ needs.determine-next-versions.outputs.next-minor }}'
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git tag -a "${tag}" -m "${message}"
+          git push origin "${tag}"
+
+      - name: Tag Patch
+        if: ${{ github.event.inputs.release-type == 'patch' }}
+        run: |
+          tag='v${{ needs.determine-next-versions.outputs.next-patch }}'
+          message='Push tag for new patch release v${{ needs.determine-next-versions.outputs.next-patch }}'
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git tag -a "${tag}" -m "${message}"
+          git push origin "${tag}"
+
+      - name: Create Major Release
+        uses: ncipollo/release-action@v1
+        if: ${{ github.event.inputs.release-type == 'major' }}
+        with:
+          tag: "${{ needs.determine-next-versions.outputs.next-major }}"
+          generateReleaseNotes: true
+          draft: false
+
+      - name: Create Minor Release
+        uses: ncipollo/release-action@v1
+        if: ${{ github.event.inputs.release-type == 'minor' }}
+        with:
+          tag: "${{ needs.determine-next-versions.outputs.next-minor }}"
+          generateReleaseNotes: true
+          draft: false
+
+      - name: Create Patch Release
+        uses: ncipollo/release-action@v1
+        if: ${{ github.event.inputs.release-type == 'patch' }}
+        with:
+          tag: "${{ needs.determine-next-versions.outputs.next-patch }}"
+          generateReleaseNotes: true
+          draft: false
+
+  publish-cocoapod:
+    name: Publish Cocoapod
+    runs-on: macos-latest
+    needs:
+      [
+        determine-next-versions,
+        create-release-branch,
+        bump-version,
+        tag-and-create-release,
+      ]
+
+    steps:
+      - name: Check out code - major release
+        uses: actions/checkout@v3
+        if: ${{ github.event.inputs.release-type == 'major' }}
+        with:
+          ref: ${{needs.determine-next-versions.outputs.branch-major}}
+
+      - name: Check out code - minor release
+        uses: actions/checkout@v3
+        if: ${{ github.event.inputs.release-type == 'minor' }}
+        with:
+          ref: ${{needs.determine-next-versions.outputs.branch-minor}}
+
+      - name: Check out code - patch release
+        uses: actions/checkout@v3
+        if: ${{ github.event.inputs.release-type == 'patch' }}
+        with:
+          ref: ${{needs.determine-next-versions.outputs.branch-patch}}
+
+      - name: Set up Xcode 15.4
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.4'
+
+      - name: Install Cocoapods
+        run: gem install cocoapods
+
+      - name: Deploy Major to Cocoapds
+        if: ${{ github.event.inputs.release-type == 'major' }}
+        run: |
+          set -eo pipefail
+          export LIB_VERSION=${{ needs.determine-next-versions.outputs.next-major }}
+          echo "version: ${LIB_VERSION}"
+          pod lib lint --allow-warnings
+          pod trunk push --allow-warnings
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+
+      - name: Deploy Minor to Cocoapds
+        if: ${{ github.event.inputs.release-type == 'minor' }}
+        run: |
+          set -eo pipefail
+          export LIB_VERSION=${{ needs.determine-next-versions.outputs.next-minor }}
+          echo "version: ${LIB_VERSION}"
+          pod lib lint --allow-warnings
+          pod trunk push --allow-warnings
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+
+      - name: Deploy Patch to Cocoapds
+        if: ${{ github.event.inputs.release-type == 'patch' }}
+        run: |
+          set -eo pipefail
+          export LIB_VERSION=${{ needs.determine-next-versions.outputs.next-patch }}
+          echo "version: ${LIB_VERSION}"
+          pod lib lint --allow-warnings
+          pod trunk push --allow-warnings
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+
+  create-pull-request:
+    name: Create Pull Request
+    runs-on: ubuntu-latest
+    needs:
+      [
+        determine-next-versions,
+        create-release-branch,
+        bump-version,
+        tag-and-create-release,
+        publish-cocoapod,
+      ]
+
+    steps:
+      - name: Check out code - major release
+        uses: actions/checkout@v3
+        if: ${{ github.event.inputs.release-type == 'major' }}
+        with:
+          ref: ${{needs.determine-next-versions.outputs.branch-major}}
+
+      - name: Check out code - minor release
+        uses: actions/checkout@v3
+        if: ${{ github.event.inputs.release-type == 'minor' }}
+        with:
+          ref: ${{needs.determine-next-versions.outputs.branch-minor}}
+
+      - name: Check out code - patch release
+        uses: actions/checkout@v3
+        if: ${{ github.event.inputs.release-type == 'patch' }}
+        with:
+          ref: ${{needs.determine-next-versions.outputs.branch-patch}}
+
+      - name: Create pull request for major release into main
+        uses: thomaseizinger/create-pull-request@1.0.0
+        if: ${{ github.event.inputs.release-type == 'major' }}
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          head: ${{needs.determine-next-versions.outputs.branch-major}}
+          base: main
+          title: v${{ needs.determine-next-versions.outputs.next-major }} into main
+          body: |
+            This PR was created by the create-release-branch workflow.
+            New Release: v${{ needs.determine-next-versions.outputs.next-major }}
+            I've updated the version name and code commit: ${{ steps.make-commit.outputs.commit }}.
+
+      - name: Create pull request for minor release into main
+        uses: thomaseizinger/create-pull-request@1.0.0
+        if: ${{ github.event.inputs.release-type == 'minor' }}
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          head: ${{needs.determine-next-versions.outputs.branch-minor}}
+          base: main
+          title: v${{ needs.determine-next-versions.outputs.next-minor }} into main
+          body: |
+            This PR was created by the create-release-branch workflow.
+            New Release: v${{ needs.determine-next-versions.outputs.next-minor }}
+            I've updated the version name and code commit: ${{ steps.make-commit.outputs.commit }}.
+
+      - name: Create pull request for patch release into main
+        uses: thomaseizinger/create-pull-request@1.0.0
+        if: ${{ github.event.inputs.release-type == 'patch' }}
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          head: ${{needs.determine-next-versions.outputs.branch-patch}}
+          base: main
+          title: v${{ needs.determine-next-versions.outputs.next-patch }} into main
+          body: |
+            This PR was created by the create-release-branch workflow.
+            New Release: v${{ needs.determine-next-versions.outputs.next-patch }}
+            I've updated the version name and code commit: ${{ steps.make-commit.outputs.commit }}.

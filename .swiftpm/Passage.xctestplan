@@ -1,0 +1,43 @@
+{
+  "configurations" : [
+    {
+      "id" : "BB203008-5900-4223-A3F9-95A73DCA1C56",
+      "name" : "Test Scheme Action",
+      "options" : {
+        "targetForVariableExpansion" : {
+          "containerPath" : "container:",
+          "identifier" : "Passage",
+          "name" : "Passage"
+        }
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "environmentVariableEntries" : [
+      {
+        "key" : "PASSAGE_AUTH_TOKEN",
+        "value" : "$(PASSAGE_AUTH_TOKEN)"
+      },
+      {
+        "key" : "MAILOSAUR_API_KEY",
+        "value" : "$(MAILOSAUR_API_KEY)"
+      }
+    ],
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:",
+      "identifier" : "Passage",
+      "name" : "Passage"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "PassageTests",
+        "name" : "PassageTests"
+      }
+    }
+  ],
+  "version" : 1
+}
