@@ -1,6 +1,7 @@
 Pod::Spec.new do |s|
   s.name             = 'PassageSwift'
-  s.version          = ENV['LIB_VERSION'] || '1.0.0'
+  s.module_name      = 'Passage'
+  s.version          = ENV['LIB_VERSION'] || '1.0.1'
   s.summary          = 'Use Passage Authentication in your iOS application'
   s.homepage         = 'https://github.com/passageidentity/passage-swift'
   s.license          = { :type => 'MIT', :file => 'LICENSE.md' }
@@ -8,7 +9,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/passageidentity/passage-swift.git', :tag => s.version.to_s }
   s.ios.deployment_target = "14.0"
   s.osx.deployment_target = "12.0"
-  s.tvos.deployment_target = "14.0"
+  # s.tvos.deployment_target = "14.0"
   # s.watchos.deployment_target = "7.0"
   # s.visionos.deployment_target = "1.0"
   s.swift_version = '5.0'
