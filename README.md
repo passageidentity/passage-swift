@@ -3,7 +3,9 @@
 # Passage Swift
 
 ![SPM Version](https://img.shields.io/github/v/release/passageidentity/passage-swift?style=flat&label=Swift%20Package)
+<!---
 ![Cocoapods Version](https://img.shields.io/github/v/release/passageidentity/passage-swift?style=flat&label=CocoaPods)
+-->
 
 ![Language](https://img.shields.io/badge/Swift-informational?style=flat&logo=swift&logoColor=white&color=FA7343)
 ![Platforms](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fpassage-swift%2Fpassage-swift%2Fbadge%3Ftype%3Dplatforms)
@@ -18,12 +20,13 @@ To install via Swift Package Manager, enter this url Xcode's Swift Package Manag
 ```
 https://github.com/passageidentity/passage-swift
 ```
-
+<!---
 ### CocoaPods
 To install via Cocoapods, add this dependency to your Podfile:
 ``` ruby
 pod 'PassageSwift'
 ```
+-->
 
  <br />
 
