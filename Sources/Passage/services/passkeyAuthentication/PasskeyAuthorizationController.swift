@@ -12,31 +12,17 @@ internal class PasskeyAuthenticationController:
     
     internal func requestPasskeyRegistration(
         registrationRequest: PasskeyRegistrationRequest,
-        includeSecurityKeyOption: Bool = false,
-        autoUpgradeAccount: Bool = false
+        includeSecurityKeyOption: Bool = false
     ) async throws -> ASAuthorizationPublicKeyCredentialRegistration {
         let publicKeyCredentialProvider = ASAuthorizationPlatformPublicKeyCredentialProvider(
             relyingPartyIdentifier: registrationRequest.relyingPartyIdentifier
         )
-        var platformRegistrationRequest = publicKeyCredentialProvider
+        let platformRegistrationRequest = publicKeyCredentialProvider
             .createCredentialRegistrationRequest(
                 challenge: registrationRequest.challenge,
                 name: registrationRequest.userName,
                 userID: registrationRequest.userId
             )
-        #if os(iOS) || os(macOS) || os(visionOS)
-        if #available(iOS 18.0, macOS 15.0, visionOS 2.0, *) {
-            if autoUpgradeAccount {
-                platformRegistrationRequest = publicKeyCredentialProvider
-                    .createCredentialRegistrationRequest(
-                        challenge: registrationRequest.challenge,
-                        name: registrationRequest.userName,
-                        userID: registrationRequest.userId,
-                        requestStyle: .conditional
-                    )
-            }
-        }
-        #endif
         // To match other webauthn "cross-platform" behaviors, we always include a Platform provider
         // request, never JUST a Security Key provider request.
         var requests: [ASAuthorizationRequest] = [ platformRegistrationRequest ]
