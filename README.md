@@ -46,7 +46,7 @@ let authToken = passage.tokenStore.authToken
  <br />
 
 ## 🚀 Get Started
-### Visit our 📚 [Passage Swift Docs](https://docs.passage.id) to get started adding Passage to your Swift app.
+### Visit our 📚 [Passage Swift Docs](https://docs.passage.id/complete/ios/add-passage) to get started adding Passage to your Swift app.
  <br />
 
 ---
