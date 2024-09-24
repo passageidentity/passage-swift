@@ -1,5 +1,5 @@
 {
-  "originHash" : "fd6f2919a6beae8573b7edd484b251a4d01d37ca02c6a7f36527f0f3c797a195",
+  "originHash" : "7e98e0c0713867f950e25ec1449eb07b639fe756ca08d6d5f949fda33c8fa967",
   "pins" : [
     {
       "identity" : "anycodable",
@@ -8,15 +8,6 @@
       "state" : {
         "revision" : "69261f239f0fffaf51495dadc4f8483fbfe97025",
         "version" : "0.6.1"
-      }
-    },
-    {
-      "identity" : "passage-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/passageidentity/passage-swift",
-      "state" : {
-        "revision" : "4b9b700f731a6cabb91524da91fa775636adf491",
-        "version" : "1.0.0"
       }
     }
   ],
