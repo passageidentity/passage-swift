@@ -105,7 +105,7 @@ jobs:
         if: ${{ github.event.inputs.release-type == 'major' }}
         with:
           name: "settings.json"
-          dir: "./Sources/Passage/Resources/"
+          dir: "./Sources/Passage/"
           json: "{\n\t\"version\": \"${{ needs.determine-next-versions.outputs.next-major }}\"\n}"
 
       - name: Update minor version
@@ -113,7 +113,7 @@ jobs:
         if: ${{ github.event.inputs.release-type == 'minor' }}
         with:
           name: "settings.json"
-          dir: "./Sources/Passage/Resources/"
+          dir: "./Sources/Passage/"
           json: "{\n\t\"version\": \"${{ needs.determine-next-versions.outputs.next-minor }}\"\n}"
 
       - name: Update patch version
@@ -121,7 +121,7 @@ jobs:
         if: ${{ github.event.inputs.release-type == 'patch' }}
         with:
           name: "settings.json"
-          dir: "./Sources/Passage/Resources/"
+          dir: "./Sources/Passage/"
           json: "{\n\t\"version\": \"${{ needs.determine-next-versions.outputs.next-patch }}\"\n}"
 
       - name: Commit major version change
