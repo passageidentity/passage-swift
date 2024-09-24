@@ -146,7 +146,7 @@ final public class PassageCurrentUser {
     @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
     @available(watchOS, unavailable)
     @discardableResult
-    public func addPasskey(options: PasskeyCreationOptions? = nil) async throws -> AuthResult {
+    public func addPasskey(options: PasskeyCreationOptions? = nil) async throws -> Passkey {
         setAuthTokenHeader()
         do {
             // Request a Registration Start Handshake from Passage server
@@ -172,17 +172,16 @@ final public class PassageCurrentUser {
                 registrationRequest: registrationRequest,
                 includeSecurityKeyOption: includeSecurityKeyOption
             )
-            // Send the new Credential Handshake Response to Passage server
-            let finishRequest = RegisterWebAuthnFinishRequest(
+            let finishRequest = AddDeviceFinishRequest(
                 handshakeId: startResponse.handshake.id,
                 handshakeResponse: credential.response(),
                 userId: startResponse.user?.id ?? ""
             )
-            let finishResponse = try await RegisterAPI.registerWebauthnFinish(
+            let finishResponse = try await CurrentuserAPI.postCurrentuserAddDeviceFinish(
                 appId: appId,
-                registerWebAuthnFinishRequest: finishRequest
+                addDeviceFinishRequest: finishRequest
             )
-            return finishResponse.authResult
+            return finishResponse.device
         } catch {
             throw CurrentUserError.convert(error: error)
         }
