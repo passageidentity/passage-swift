@@ -1,3 +1,4 @@
+TEST E2E TESTS
 ![Passage Swift](https://storage.googleapis.com/passage-docs/passage-github-banner.png)
 
 # Passage Swift
