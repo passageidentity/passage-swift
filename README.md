@@ -1,61 +1,88 @@
-![Passage Swift](https://storage.googleapis.com/passage-docs/passage-github-banner.png)
-
-# Passage Swift
+![passage-swift](https://storage.googleapis.com/passage-docs/github-md-assets/passage-swift.png)
 
 ![SPM Version](https://img.shields.io/github/v/release/passageidentity/passage-swift?style=flat&label=Swift%20Package)
 ![Cocoapods Version](https://img.shields.io/github/v/release/passageidentity/passage-swift?style=flat&label=CocoaPods)
-
 ![Language](https://img.shields.io/badge/Swift-informational?style=flat&logo=swift&logoColor=white&color=FA7343)
 ![Platforms](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fpassage-swift%2Fpassage-swift%2Fbadge%3Ftype%3Dplatforms)
-![Company](https://img.shields.io/badge/1Password-informational?style=flat&logo=1password&logoColor=white&color=3B66BC)
-![License](https://img.shields.io/github/license/passageidentity/passage-swift.svg?style=flat)
+![License](https://img.shields.io/github/license/passageidentity/passage-swift.svg?style=flat) ![Static Badge](https://img.shields.io/badge/Built_by_1Password-grey?logo=1password)
 
- <br />
+## About
 
-## ⚙️ Installation
-### Swift Package Manager
-To install via Swift Package Manager, enter this url Xcode's Swift Package Manager's search bar:
+[Passage by 1Password](https://1password.com/product/passage) unlocks the passwordless future with a simpler, more secure passkey authentication experience. Passage handles the complexities of the [WebAuthn API](https://blog.1password.com/what-is-webauthn/), and allows you to implement passkeys with ease.
+
+Use [Passkey Flex](https://docs.passage.id/flex) to add passkeys to an existing authentication experience.
+
+Use [Passkey Complete](https://docs.passage.id/complete) as a standalone passwordless auth solution.
+
+Use [Passkey Ready](https://docs.passage.id/passkey-ready) to determine if your users are ready for passkeys.
+
+### In passage-swift
+
+Use passage-swift to implement Passkey Complete into your Swift application to authenticate requests and manage users.
+
+| Product                                                                                                                                  | Compatible                                                                                                |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| ![Passkey Flex](https://storage.googleapis.com/passage-docs/github-md-assets/passage-passkey-flex-icon.png) Passkey **Flex**             | ✖️ For Passkey Flex, check out [passage-flex-ios](https://github.com/passageidentity/passage-flex-ios)    |
+| ![Passkey Complete](https://storage.googleapis.com/passage-docs/github-md-assets/passage-passkey-complete-icon.png) Passkey **Complete** | ✅                                                                                                        |
+| ![Passkey Ready](https://storage.googleapis.com/passage-docs/github-md-assets/passage-passkey-ready-icon.png) Passkey **Ready**          | ✖️ For Passkey Ready, check out [Authentikit](https://github.com/passageidentity/passage-authentikit-ios) |
+|                                                                                                                                          |
+
+## Getting Started
+
+### Check Prerequisites
+
+<p>
+ You'll need a free Passage account and a Passkey Complete app set up in <a href="https://console.passage.id/">Passage Console</a> to get started. <br />
+ <sub><a href="https://docs.passage.id/home#passage-console">Learn more about Passage Console →</a></sub>
+</p>
+
+### Install
+
+Via Swift Package Manager - enter this url Xcode's Swift Package Manager's search bar:
+
 ```
 https://github.com/passageidentity/passage-swift
 ```
 
-### CocoaPods
-To install via Cocoapods, add this dependency to your Podfile:
-``` ruby
+Via CocoaPods - add this dependency to your Podfile:
+
+```ruby
 pod 'PassageSwift'
 ```
 
- <br />
+### Import
 
-## 👩🏽‍💻 Example Usage
-Below is an example of how easy it is to use Passage Swift to register a new user with a passkey and get their auth token:
-
-``` swift
+```swift
 import Passage
-
-let passage = Passage(appId: "YOUR_PASSAGE_APP_ID")
-
-try await passage.passkey.register(identifier: "new_user@email.com")
-
-let authToken = passage.tokenStore.authToken
 ```
 
- <br />
+### Initialize
 
-## 🚀 Get Started
-### Visit our 📚 [Passage Swift Docs](https://docs.passage.id/complete/ios/add-passage) to get started adding Passage to your Swift app.
- <br />
+```js
+let passage = Passage(appId: "YOUR_PASSAGE_APP_ID")
+```
+
+### Go Passwordless
+
+Find all core functions, user management details, and more implementation guidance on our [Passkey Complete Swift Documentation](https://docs.passage.id/complete/ios/add-passage) page.
+
+## Support & Feedback
+
+We are here to help! Find additional docs, the best ways to get in touch with our team, and more within our [support resources](https://github.com/passageidentity/.github/blob/main/SUPPORT.md).
+
+<br />
 
 ---
-<br />
+
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: light)" srcset="https://storage.googleapis.com/passage-docs/logo-small-light.pngg" width="150">
-    <source media="(prefers-color-scheme: dark)" srcset="https://storage.googleapis.com/passage-docs/logo-small-dark.png" width="150">
-    <img alt="Passage Logo" src="https://storage.googleapis.com/passage-docs/logo-small-light.png" width="150">
-  </picture>
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://storage.googleapis.com/passage-docs/github-md-assets/passage-by-1password-dark.png">
+      <source media="(prefers-color-scheme: light)" srcset="https://storage.googleapis.com/passage-docs/github-md-assets/passage-by-1password-light.png">
+      <img alt="Passage by 1Password Logo" src="https://storage.googleapis.com/passage-docs/github-md-assets/passage-by-1password-light.png">
+    </picture>
 </p>
 
-<p align="center">Give customers the passwordless future they deserve. To learn more check out <a href="https://passage.1password.com">passage.1password.com</a></p>
-
-<p align="center">This project is licensed under the MIT license. See the <a href="./LICENSE"> LICENSE</a> file for more info.</p>
+<p align="center">
+    <sub>Passage is a product by <a href="https://1password.com/product/passage">1Password</a>, the global leader in access management solutions with nearly 150k business customers.</sub><br />
+    <sub>This project is licensed under the MIT license. See the <a href="LICENSE">LICENSE</a> file for more info.</sub>
+</p>
