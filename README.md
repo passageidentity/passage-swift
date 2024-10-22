@@ -58,7 +58,7 @@ import Passage
 
 ### Initialize
 
-```js
+```swift
 let passage = Passage(appId: "YOUR_PASSAGE_APP_ID")
 ```
 
