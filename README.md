@@ -20,11 +20,11 @@ Use [Passkey Ready](https://docs.passage.id/passkey-ready) to determine if your 
 
 Use passage-swift to implement Passkey Complete into your Swift application to authenticate requests and manage users.
 
-| Product                                                                                                                                  | Compatible                                                                                                |
-| ---------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| ![Passkey Flex](https://storage.googleapis.com/passage-docs/github-md-assets/passage-passkey-flex-icon.png) Passkey **Flex**             | ✖️ For Passkey Flex, check out [passage-flex-ios](https://github.com/passageidentity/passage-flex-ios)    |
-| ![Passkey Complete](https://storage.googleapis.com/passage-docs/github-md-assets/passage-passkey-complete-icon.png) Passkey **Complete** | ✅                                                                                                        |
-| ![Passkey Ready](https://storage.googleapis.com/passage-docs/github-md-assets/passage-passkey-ready-icon.png) Passkey **Ready**          | ✖️ For Passkey Ready, check out [Authentikit](https://github.com/passageidentity/passage-authentikit-ios) |
+| Product                                                                                                                                  | Compatible                                                                                                            |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| ![Passkey Flex](https://storage.googleapis.com/passage-docs/github-md-assets/passage-passkey-flex-icon.png) Passkey **Flex**             | ✖️ For Passkey Flex, check out [passage-flex-ios](https://github.com/passageidentity/passage-flex-ios)                |
+| ![Passkey Complete](https://storage.googleapis.com/passage-docs/github-md-assets/passage-passkey-complete-icon.png) Passkey **Complete** | ✅                                                                                                                    |
+| ![Passkey Ready](https://storage.googleapis.com/passage-docs/github-md-assets/passage-passkey-ready-icon.png) Passkey **Ready**          | ✖️ For Passkey Ready, check out [passage-authentikit-ios](https://github.com/passageidentity/passage-authentikit-ios) |
 |                                                                                                                                          |
 
 ## Getting Started
