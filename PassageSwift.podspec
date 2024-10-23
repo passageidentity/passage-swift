@@ -2,10 +2,10 @@ Pod::Spec.new do |s|
   s.name             = 'PassageSwift'
   s.module_name      = 'Passage'
   s.version          = ENV['LIB_VERSION'] || '1.0.1'
-  s.summary          = 'Use Passage Authentication in your iOS application'
-  s.homepage         = 'https://github.com/passageidentity/passage-swift'
-  s.license          = { :type => 'MIT', :file => 'LICENSE.md' }
-  s.author           = { 'Passage Identity, Inc' => 'hello@passage.id' }
+  s.summary          = 'Passkey Complete for Apple Platforms - Go completely passwordless with a standalone auth solution in your Swift apps with Passage by 1Password'
+  s.homepage         = 'http://docs.passage.id/complete'
+  s.license          = { :type => 'MIT', :file => 'LICENSE' }
+  s.author           = { 'Passage by 1Password' => 'support@passage.id' }
   s.source           = { :git => 'https://github.com/passageidentity/passage-swift.git', :tag => s.version.to_s }
   s.ios.deployment_target = "14.0"
   # s.osx.deployment_target = "12.0"
