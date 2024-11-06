@@ -137,7 +137,8 @@ internal class PasskeyAuthenticationController:
         controller: ASAuthorizationController,
         didCompleteWithError error: Error
     ) {
-        assertionCredentialContinuation?.resume(throwing: error)
+		registrationCredentialContinuation?.resume(throwing: error)
+		assertionCredentialContinuation?.resume(throwing: error)
     }
     
 }
