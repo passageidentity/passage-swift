@@ -13,9 +13,9 @@ env:
   MAILOSAUR_API_KEY: ${{ secrets.MAILOSAUR_API_KEY }}
 
 jobs:
-  integration-test-iOS-18:
+  integration-test-iOS:
     name: Build and Integration Tests iOS
-    runs-on: macos-latest
+    runs-on: macos-15
     steps:
       - name: Checkout
         uses: actions/checkout@v2
