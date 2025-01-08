@@ -15,7 +15,7 @@ env:
 jobs:
   integration-test-iOS:
     name: Build and Integration Tests iOS
-    runs-on: macos-13.1
+    runs-on: macos-15.1
     steps:
       - name: Checkout
         uses: actions/checkout@v2
